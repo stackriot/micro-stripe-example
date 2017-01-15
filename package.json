@@ -1,0 +1,12 @@
+{
+  "name": "micro-stripe-example",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "Create customer at Stripe and charge him for later purchases",
+  "main": "create/createCustomer.js",
+  "dependencies": {
+    "micro": "^6.2.0",
+    "request": "^2.79.0",
+    "stripe": "^4.14.0"
+  }
+}
