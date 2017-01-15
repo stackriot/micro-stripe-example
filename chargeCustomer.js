@@ -1,9 +1,9 @@
 const { json, send } = require('micro')
 const request = require('request')
-const stripe = require('stripe')('__STRIPE_SECRET_KEY__')
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
-const endpoint = 'https://api.graph.cool/simple/v1/__PROJECT_ID__'
-const graphcoolToken = 'Bearer __PERMANENT_ACCESS_TOKEN__'
+const endpoint = process.env.ENDPOINT
+const graphcoolToken = `Bearer ${process.env.GC_PAT}`
 
 module.exports = async (req, res) => {
   const data = await json(req)
