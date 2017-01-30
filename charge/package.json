@@ -1,0 +1,15 @@
+{
+  "name": "stripe-charge-customer-example",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "Charge a Stripe customer money for a specific purchase",
+  "main": "chargeCustomer.js",
+  "dependencies": {
+    "micro": "^6.2.0",
+    "request": "^2.79.0",
+    "stripe": "^4.14.0"
+  },
+  "scripts": {
+    "start": "micro"
+  }
+}
