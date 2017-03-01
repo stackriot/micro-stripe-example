@@ -57,12 +57,14 @@ Now add the needed secrets:
 
 * `now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`
 * `now secret add gc-pat XXX`
+* `now secret add create-secret XXX`
+* `now secret add charge-secret XXX`
 * `now secret add endpoint https://api.graph.cool/simple/v1/__PROJECT_ID__`
 
 Deploy the two microservices:
 
-* `now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint create/createCustomer.js`
-* `now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint charge/chargeCustomer.js`
+* `now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@create-secret create/`
+* `now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@charge-secret charge/`
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 
