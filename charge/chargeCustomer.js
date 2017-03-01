@@ -6,7 +6,7 @@ require('now-logs')(log);
 
 const endpoint = process.env.ENDPOINT
 const graphcoolToken = `Bearer ${process.env.GC_PAT}`
-const secureKey = process.env.SECUREKEY
+const token = process.env.TOKEN
 
 module.exports = async (req, res) => {
   const data = await json(req)
@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
   const { parse } = require('url');
   const { query } = parse(req.url, true)
 
-  if (secureKey === query.securekey) {
+  if (token === query.token) {
     const purchase = data.createdNode
     const purchaseId = purchase.id
     const customerId = purchase.user.stripeId

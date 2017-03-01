@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
   const { parse } = require('url');
   const { query } = parse(req.url, true)
 
-  if (secureKey === query.securekey) {
+  if (token === query.token) {
     const cardDetails = data.createdNode
     const cardDetailsId = cardDetails.id
 
