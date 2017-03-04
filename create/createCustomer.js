@@ -6,9 +6,9 @@ require('now-logs')(log);
 
 const endpoint = process.env.ENDPOINT
 const graphcoolToken = `Bearer ${process.env.GC_PAT}`
-const secureKey = process.env.SECUREKEY
+const token = process.env.TOKEN
 
-console.log('Init');
+console.log('Init createCustomer.js');
 
 module.exports = async (req, res) => {
   const data = await json(req)
@@ -16,14 +16,12 @@ module.exports = async (req, res) => {
   const { query } = parse(req.url, true)
 
   if (token === query.token) {
-    const cardDetails = data.createdNode
-    const cardDetailsId = cardDetails.id
-
-    const user = cardDetails.user
+    const stripeToken = data.createdNode
+    const user = stripeToken.stripeTokenToUser
     const userId = user.id
-  //   Add logs during development, but remember to remove them for production
-  //   console.log('Card Details');
-  //   console.log(cardDetails);
+    // Add logs during development, but remember to remove them for production
+    // console.log('Stripe Token object');
+    // console.log(stripeToken);
 
     // TODO: don't create customer if stripe id already exists
 
@@ -32,11 +30,11 @@ module.exports = async (req, res) => {
     stripe.customers.create({
         email: user.email,
         description: user.name,
-        source: cardDetails.cardToken
+        source: stripeToken.stripeToken
       }, (err, customer) => {
         if (err) {
           console.log(err)
-          send(res, 400, { error: `Stripe customer with card details ${cardDetailsId} could not be created for user ${userId}` })
+          send(res, 400, { error: `Stripe customer with card details ${stripeToken.id} could not be created for user ${userId}` })
         } else {
           // then update user with obtained Stripe customer id
           const updateUser = `mutation {
