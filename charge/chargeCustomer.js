@@ -8,16 +8,17 @@ const endpoint = process.env.ENDPOINT
 const graphcoolToken = `Bearer ${process.env.GC_PAT}`
 const token = process.env.TOKEN
 
+console.log('Init chargeCustomer.js');
+
 module.exports = async (req, res) => {
   const data = await json(req)
-  
   const { parse } = require('url');
   const { query } = parse(req.url, true)
 
   if (token === query.token) {
     const purchase = data.createdNode
     const purchaseId = purchase.id
-    const customerId = purchase.user.stripeId
+    const customerId = purchase.purchaseToUser.stripeId
 
   // Add logs during development, but remove for production
   // console.log('Purchase Object');
