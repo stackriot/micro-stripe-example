@@ -1,34 +1,87 @@
 # micro-stripe-example
 
-Example usage of Graphcool mutation callbacks to implement a custom Stripe payment workflow. The full tutorial can be found [here](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7).
+Example usage of Graphcool mutation callbacks to implement a custom Stripe payment workflow.
+
+The full tutorial can be found [here](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7).
+
+We also add [Auth0]() integration for a full Promotion/Sales site experience.
+
+[graph.cool Auth0 tutorial](https://www.graph.cool/docs/tutorials/react-apollo-auth0-pheiph4ooj/)
 
 ## Getting Started
 
-### Setting up the data model
+### Auth0 config
+
+Create new [Auth0](https://auth0.com) client.
+
+To configure Auth0, go to their [website](https://auth0.com) and log into your Auth0 account.
+
+[Create a new Client](https://manage.auth0.com/#/clients)
+
+Choose *Single Page Application*.
+
+Copy your Auth0 Client stats:
+
+- `Domain`
+- `Client ID`
+- `Client secret`
+
+From the *Settings* tab of the new client.
+
+Add `localhost:3000 to the allowed callback URLs as well.
+
+Hit `Save Changes` at the bottom!
+
+### Configure Auth0 with Graphcool
+
+In the graphcool browser console.
+
+- Create a new project or open existing one
+- Go to `Data` in right menu
+- Click `User` type (System)
+- Select `Configure Auth Providers`
+- Enable `Auth0`
+
+Enter the Auth0 client stats:
+
+- `Domain`
+- `Client ID`
+- `Client secret`
+
+### Setting up the Data model
+
+The full Schema should look as follows
 
 ```idl
-type User {
-  id: ID!
-  name: String!
-  email: String!
-  password: String!
-  stripeId: String
-  orders: [Purchase]
-  cardDetails: CardDetails
-}
-
-type CardDetails {
-  id: ID!
+type CardDetails implements Node {
   cardToken: String!
-  user: User
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  user: User @relation(name: "CardDetailsOnUser")
 }
 
-type Purchase {
-  id: ID!
+type Purchase implements Node {
+  amount: Float!
+  createdAt: DateTime!
   description: String!
-  amount: Int!
-  isPaid: Boolean!
-  user: User
+  id: ID! @isUnique
+  isPaid: Boolean! @defaultValue(value: false)
+  updatedAt: DateTime!
+  user: User @relation(name: "PurchaseOnUser")
+}
+
+type User implements Node {
+  auth0UserId: String @isUnique
+  cardDetails: CardDetails @relation(name: "CardDetailsOnUser")
+  createdAt: DateTime!
+  email: String @isUnique
+  id: ID! @isUnique
+  name: String!
+  password: String
+  purchases: [Purchase!]! @relation(name: "PurchaseOnUser")
+  stripeId: String
+  updatedAt: DateTime!
 }
 ```
 
@@ -42,26 +95,33 @@ Here is a checklist of necessary steps to end up with the correct schema:
 
 ## Add email/password authentication
 
-* Enable email/password provider
+Enable email/password provider
 
-`/integrations/authentication/email` on your project, or click *integrations* in left menu
+- Click `Integrations`
+- Select `Email-Password Auth`
 
 ### Setting up permissions
 
-* everyone can create a User node - meaning that everyone can sign up
+See [permission-setup](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7/#permission-setup)
 
-* authenticated users can add card details to their own user node
+* Everyone can create a User node - meaning that everyone can sign up
 
-![Authenticated CardDetails-User permissions](https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/card-details-user-permission.png "Authenticated CardDetails-User permissions")
+Only *authenticated users* can *add* (ie. create) card details to their own user
 
-* remove all permissions for `CardDetails`
+<img src="https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/card-details-user-permission.png" alt="Authenticated CardDetails-User permissions" width="50%" height="50%">
 
-![CardDetails permissions](https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/card-details-permission.png "CardDetails permissions")
+Remove all permissions for `CardDetails`
 
-* and remove permission for `User.stripeId`
+<img src="https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/card-details-permission.png" alt="CardDetails permissions" width="50%" height="50%">
 
-![User.stripeId permissions](https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/user-stripeid-permission.png "User.stripeId permissions")
+Remove permission for `User.stripeId`
 
+<img src="https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/user-stripeid-permission.png" alt="User.stripeId permissions" width="50%" height="50%">
+
+
+## Create test account on stripe
+
+Retrieve test account secrets
 
 ### Using now for deployment
 
