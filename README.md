@@ -187,6 +187,8 @@ TEST_STRIPE_PUBLISHABLE_KEY=pk_test_lG8swclqDn3BoODaNWotxxxx
 
 ### Using now for deployment
 
+[now](https://zeit.co/now) by [zeit.co](https://zeit.co) is a
+
 ```sh
 npm install -g now
 ```
@@ -224,7 +226,8 @@ You can add secrets in a special `now/secrets.json` file which is included in th
   "stripe-secret": "sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`",
   "create-secret": "xyc",
   "charge-secret": "123",
-  "log": "XXX"
+  "log": "XXX",
+  "endpoint" "https://api.graph.cool/simple/v1/cj2rloi1xxxxxx"
 }
 ```
 
@@ -241,6 +244,21 @@ Something like: `https://api.graph.cool/simple/v1/ont28601k6x1qe8cj2rlxxxx`
 ### Start services
 
 `$ lerna run start` (runs `npm start` on each lerna package)
+
+[Now micro getting started](https://zeit.co/now#get-started)
+
+Each micro service contains the following in `package.json`
+
+```js
+  ...
+  "main": "chargeCustomer.js",
+  "scripts": {
+    "start": "micro"
+  },
+  ...
+```
+
+However...
 
 ```bash
 $ npm run start
