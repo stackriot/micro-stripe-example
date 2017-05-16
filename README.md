@@ -49,12 +49,18 @@ Here is a checklist of necessary steps to end up with the correct schema:
 ### Setting up permissions
 
 * everyone can create a User node - meaning that everyone can sign up
+
 * authenticated users can add card details to their own user node
-* remove all permissions for `CardDetails` and `User.stripeId`
 
-![Perm](https://github.com/tela5/micro-stripe-example/raw/master/screenshots/permission1.png "P1")
+![Authenticated CardDetails-User permissions](https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/card-details-user-permission.png "Authenticated CardDetails-User permissions")
 
-![Perm2](https://github.com/tela5/micro-stripe-example/raw/master/screenshots/permission2.png "P2")
+* remove all permissions for `CardDetails`
+
+![CardDetails permissions](https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/card-details-permission.png "CardDetails permissions")
+
+* and remove permission for `User.stripeId`
+
+![User.stripeId permissions](https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/user-stripeid-permission.png "User.stripeId permissions")
 
 
 ### Using now for deployment
