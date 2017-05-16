@@ -3,9 +3,20 @@
 var nrc = require('node-run-cmd');
 var keyMap = require('./secrets.json')
 
-Object.keys(keyMap).map(key => {
+if (!keyMap) {
+  throw Error('missing key file: secrets.json')
+}
+
+var commands = Object.keys(keyMap).map(key => {
   var value = keyMap[key]
-  var cmd = `now secret add ${key} ${value}`
-  console.log(cmd)
-  nrc.run(cmd);
+  return `now secret add ${key} ${value} &`
 })
+
+console.log(commands.join('\n'))
+nrc.run(commands, {
+  verbose: true
+}).then(function (exitCodes) {
+  console.log('exits', exitCodes);
+}, function (err) {
+  console.log('Error: ', err);
+});
