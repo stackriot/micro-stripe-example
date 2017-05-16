@@ -187,7 +187,7 @@ TEST_STRIPE_PUBLISHABLE_KEY=pk_test_lG8swclqDn3BoODaNWotxxxx
 
 ### Using now for deployment
 
-[now](https://zeit.co/now) by [zeit.co](https://zeit.co) is a
+Install [now](https://zeit.co/now) by [zeit.co](https://zeit.co) globally:
 
 ```sh
 npm install -g now
