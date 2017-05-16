@@ -39,13 +39,23 @@ Here is a checklist of necessary steps to end up with the correct schema:
 * Create `Purchase` model with the fields string `description`, int `amount`, boolean `isPaid`
 * Create one-to-one relation `UserCardDetails`, `user` - `cardDetails`
 * Create one-to-many relation `UserPurchases`, `user` - `purchases`
+
+## Add email/password authentication
+
 * Enable email/password provider
+
+`/integrations/authentication/email` on your project, or click *integrations* in left menu
 
 ### Setting up permissions
 
 * everyone can create a User node - meaning that everyone can sign up
 * authenticated users can add card details to their own user node
 * remove all permissions for `CardDetails` and `User.stripeId`
+
+![Perm](https://github.com/tela5/micro-stripe-example/raw/master/screenshots/permission1.png "P1")
+
+![Perm2](https://github.com/tela5/micro-stripe-example/raw/master/screenshots/permission2.png "P2")
+
 
 ### Using now for deployment
 
