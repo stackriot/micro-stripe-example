@@ -4,7 +4,7 @@ Example usage of [Graphcool](https://www.graph.cool) mutation callbacks to imple
 
 The full tutorial can be found [here](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7).
 
-A more advanced Stripe tutorial example can be found [here](https://medium.com/consciousapps/integrating-stripe-with-react-graphql-and-apollo-client-e09fdc9e5b95)
+A more advanced Stripe tutorial example can be found [here](https://medium.com/consciousapps/integrating-stripe-with-react-graphql-and-apollo-client-e09fdc9e5b95) which build on top of this one :)
 
 We also add [Auth0](https://auth0.com) integration to act as a template a full Promotion/Sales site experience.
 
@@ -13,6 +13,10 @@ We also add [Auth0](https://auth0.com) integration to act as a template a full P
 The project is structured and packaged as a [lerna](https://github.com/lerna/lerna) project
 
 ## Getting Started
+
+Install dependencies for each project
+
+`$ lerna bootstrap`
 
 ### Auth0 config
 
@@ -217,9 +221,10 @@ You can add secrets in a special `now/secrets.json` file which is included in th
 
 ```js
 {
-  "token": "sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`",
+  "stripe-secret": "sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`",
   "create-secret": "xyc",
-  "charge-secret": "123"
+  "charge-secret": "123",
+  "log": "XXX"
 }
 ```
 
@@ -233,14 +238,27 @@ In GraphCool browser console, click `Endpoints` (bottom left)
 
 Something like: `https://api.graph.cool/simple/v1/ont28601k6x1qe8cj2rlxxxx`
 
+### Start services
+
+`$ lerna run start` (runs `npm start` on each lerna package)
+
+```bash
+$ npm run start
+
+> stripe-create-customer-example@1.0.0 start /Users/xxx/repos/micro-stripe-example/packages/create
+> micro
+
+micro: Error when importing /Users/xxx/repos/micro-stripe-example/packages/create/createCustomer.js: Error: <secret-key> is not defined. Usage: require('now-logs')('<secret-key>')
+```
+
 ### Deploy the microservices
 
 The following commands are to be issued literally "as is".
 Note: The `@xxx` reference the registered secrets.
 
-`$ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@create-secret create/`
+`$ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@create-secret LOG=@log create/`
 
-`$ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@charge-secret charge/`
+`$ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@charge-secret LOG=@log charge/`
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 

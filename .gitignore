@@ -1,3 +1,4 @@
 node_modules
 .idea/
-stripe/config.json
+now/secrets.json
+*.log
