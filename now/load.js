@@ -9,12 +9,12 @@ if (!keyMap) {
 
 var commands = Object.keys(keyMap).map(key => {
   var value = keyMap[key]
-  return `now secret add ${key} ${value} &`
+  return `now secret add ${key} ${value}`
 })
 
 console.log(commands.join('\n'))
 nrc.run(commands, {
-  verbose: true
+  verbose: true,
 }).then(function (exitCodes) {
   console.log('exits', exitCodes);
 }, function (err) {

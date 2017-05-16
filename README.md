@@ -193,9 +193,21 @@ TEST_STRIPE_PUBLISHABLE_KEY=pk_test_lG8swclqDn3BoODaNWotxxxx
 npm install -g now
 ```
 
-Now add the needed secrets:
+### Adding secrets
+
+Make sure now is properly installed `now -v`
+
+**trouble shooting**
+
+If `now` doesn't return the version (`5.3` or higher, check if `now` is used for something else in your environment)
+
+In my case, I had an alias `now` (defined in my `~/.bash_profile`) to return the current time!
+
+### Add stripe secret
 
 `$ now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`
+
+### Add GC Auth token
 
 In GraphCool console, create an [authentication-token](https://www.graph.cool/docs/reference/auth/authentication-tokens-eip7ahqu5o/)
 
@@ -217,22 +229,6 @@ Add custom secrets for `create-secret` and `charge-secret` such as:
 
 Note: `create-secret` and `charge-secret` are used to create a secret URL so not everyone can just invoke your endpointin URL. This can be replaced instead by using an Auth header instead ([@nilan](https://graphcool.slack.com/messages/@nilan/))
 
-### Keys file
-
-You can add secrets in a special `now/secrets.json` file which is included in the `.gitignore` so that is is not shared.
-
-```js
-{
-  "stripe-secret": "sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`",
-  "create-secret": "xyc",
-  "charge-secret": "123",
-  "log": "XXX",
-  "endpoint" "https://api.graph.cool/simple/v1/cj2rloi1xxxxxx"
-}
-```
-
-To add the keys: `npm run keys` or `node ./now/load.js`
-
 ### Add GraphCool endpoint
 
 In GraphCool browser console, click `Endpoints` (bottom left)
@@ -240,6 +236,56 @@ In GraphCool browser console, click `Endpoints` (bottom left)
 `$ now secret add endpoint https://api.graph.cool/simple/v1/__PROJECT_ID__`
 
 Something like: `https://api.graph.cool/simple/v1/ont28601k6x1qe8cj2rlxxxx`
+
+### Keys file
+
+You can add secrets in a special `now/secrets.json` file which is included in the `.gitignore` so that is is not shared.
+
+```js
+{
+  "gc_path": "aaaaaaaeyJpYXQiOjE0OTQ5NTAzNjQsImNsaWVudElkI4444444InByb2plY3RJZxxxxxxxxAwMTYwdWZhdHV6bHUifQ.lqvwhD1-gsd5orZNfwwGB-LdMAHjpyWWxq5A7_sbcbk",
+  "create-secret": "xyc",
+  "charge-secret": "123",
+  "log": "XXX",
+  "endpoint": "https://api.graph.cool/simple/v1/cj2rloi1xxxxxx"
+}
+```
+
+To add the keys: `npm run keys` or `node ./now/load.js`
+
+### Stripe secret
+
+`now secret add sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`
+
+Example:
+
+```bash
+$ now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX
+> Enter your email: xxx@gmail.com
+> Please follow the link sent to xxxx@gmail.com to log in.
+> Verify that the provided security code in the email matches Snowy Crested Penguin.
+
+⠼ Waiting for confirmtion...
+✔ Confirmed email address!
+```
+
+### GC Auth token
+
+```bash
+$ now secret add gc_path eyJ0exxxxxxxxx
+
+> Success! Secret gc_path (xxxxDymjktZGwWHiBQj5vc) added (xxxx@gmail.com)
+```
+
+### GC endpoint
+
+```bash
+$ now secret add endpoint https://api.graph.cool/simple/v1/cj2rloi1xxxxxx
+> Success! Secret endpoint (xxxxFrI5J0LrkTaiOURZwC) added (xxxx@gmail.com)
+```
+
+... and so on ...
+
 
 ### Start services
 
@@ -258,7 +304,7 @@ Each micro service contains the following in `package.json`
   ...
 ```
 
-However...
+If you haven't added secrets correctly, it fails:
 
 ```bash
 $ npm run start
