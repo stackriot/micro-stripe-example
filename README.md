@@ -286,45 +286,6 @@ $ now secret add endpoint https://api.graph.cool/simple/v1/cj2rloi1xxxxxx
 
 ... and so on ...
 
-
-### Start services
-
-`$ lerna run start` (runs `npm start` on each lerna package)
-
-[Now micro getting started](https://zeit.co/now#get-started)
-
-Each micro service contains the following in `package.json`
-
-```js
-  ...
-  "main": "chargeCustomer.js",
-  "scripts": {
-    "start": "micro"
-  },
-  ...
-```
-
-Yoou can't run the services locally however. Always complains about missing secret :O
-
-```bash
-$ npm run start
-
-> stripe-create-customer-example@1.0.0 start /Users/xxx/repos/micro-stripe-example/packages/create
-> micro
-
-micro: Error when importing /Users/xxx/repos/micro-stripe-example/packages/create/createCustomer.js: Error: <secret-key> is not defined. Usage: require('now-logs')('<secret-key>')
-```
-
-### Create mutation callbacks
-
-When new card details are created, create corresponding Stripe customer
-
-We add a new mutation callback with the trigger `CardDetails is created`. This mutation callback creates a new Stripe customer whenever new card details are created
-
-- See [server side subscriptions](https://www.graph.cool/docs/reference/functions/server-side-subscriptions-ahlohd8ohn/)
-- [mutation callbacks: cideo tutorial](https://www.graph.cool/docs/tutorials/quickstart-3-saigai7cha/)
-- [Stripe payment: mutation callbacks](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7/#test-the-stripe-payment-workflow)
-
 ### Deploy the microservices
 
 The following commands are to be issued literally "as is".
@@ -354,6 +315,8 @@ Deploying ~/repos/micro-stripe-example/packages/create under xxxx@gmail.com
 > Deployment complete!
 ```
 
+Notice the `https://stripe-create-customer-example-xxxx.now.sh` (copied to clipboard)
+
 #### Deploy charge service
 
 ```
@@ -361,9 +324,50 @@ $ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint -e
 
 > Deploying ~/repos/micro-stripe-example/packages/charge under xxxx@gmail.com
 > Using Node.js 7.10.0 (default)
+> Ready! https://stripe-charge-customer-example-yyyyyy.now.sh (copied to clipboard)
 > ....
 > Deployment complete!
 ```
+
+Again: `https://stripe-charge-customer-example-yyyyyy.now.sh` (copied to clipboard)
+
+## Add Server Side Subscriptions (SSS)
+
+In Graph Cool browser console
+
+- Click `Mutation callbacks`
+- Click `Functions` page
+- Select `New function` and `Server-Side Subscriptions`
+
+### Create SSS functions
+
+When new card details are created, create corresponding Stripe customer
+
+We add a new SSS with the trigger `CardDetails is created`. This SSS creates a new Stripe customer whenever new card details are created
+
+- See [server side subscriptions](https://www.graph.cool/docs/reference/functions/server-side-subscriptions-ahlohd8ohn/)
+
+- Select `CardDetails` as the trigger type
+
+Now filter only on `CREATED` mutations...
+
+```
+subscription {
+  CardDetails(filter: {
+    mutation_in: [CREATED]
+  }) {
+    updatedFields
+    node {
+      id
+    }
+  }
+}
+```
+
+Now take the obtained url, add the create-secret as a query parameter and paste it to the SSS url. For example:
+
+`https://yourappname-create-customer-xxxx.now.sh?token=XXX`
+
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 
