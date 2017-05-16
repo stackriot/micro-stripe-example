@@ -88,8 +88,10 @@ type User implements Node {
 Here is a checklist of necessary steps to end up with the correct schema:
 
 * Add fields `name`, `stripeId` to `User`
+* Ensure `stripeId` is optional (advanced)
 * Create `CardDetails` model with string field `cardToken`
 * Create `Purchase` model with the fields string `description`, int `amount`, boolean `isPaid`
+* ensure `isPaid` is default `false` (advanced)
 * Create one-to-one relation `UserCardDetails`, `user` - `cardDetails`
 * Create one-to-many relation `UserPurchases`, `user` - `purchases`
 
@@ -118,6 +120,53 @@ Remove permission for `User.stripeId`
 
 <img src="https://github.com/tecla5/micro-stripe-example/raw/master/screenshots/user-stripeid-permission.png" alt="User.stripeId permissions" width="50%" height="50%">
 
+### Permission Queries
+
+Use a permission query on the `createCardDetails` mutation like this:
+
+```idl
+{
+  allUsers(filter: {
+    AND: [{
+      id: $userId
+    }, {
+      id: $new_userId
+    }]
+  }) {
+    id
+  }
+}
+{
+  allUsers(filter: {
+    AND: [{
+      id: $userId
+    }, {
+      id: $new_userId
+    }]
+  }) {
+    id
+  }
+```
+
+Note: Use a permission query on the `createPurchases` mutation and make sure to unselect the `isPaid` field.
+
+This is the query:
+
+```idl
+{
+  allUsers(filter: {
+    AND: [{
+      id: $userId
+    }, {
+      id: $new_userId
+    }]
+  }) {
+    id
+  }
+}
+```
+
+The default value false for `isPaid` and the missing permission to set `isPaid` when creating a new purchase guarantees that new purchases are automatically unpaid - ensuring that our payment workflow kicks in.
 
 ## Create test account on stripe
 
