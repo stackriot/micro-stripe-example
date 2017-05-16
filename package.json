@@ -1,0 +1,12 @@
+{
+  "name": "micro-stripe-example",
+  "scripts": {
+    "keys": "./now/load.js"
+  },
+  "devDependencies": {
+    "lerna": "^2.0.0-rc.4"
+  },
+  "dependencies": {
+    "node-run-cmd": "^1.0.1"
+  }
+}

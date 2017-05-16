@@ -1,12 +1,16 @@
 # micro-stripe-example
 
-Example usage of Graphcool mutation callbacks to implement a custom Stripe payment workflow.
+Example usage of [Graphcool](https://www.graph.cool) mutation callbacks to implement a custom Stripe payment workflow.
 
 The full tutorial can be found [here](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7).
 
-We also add [Auth0]() integration for a full Promotion/Sales site experience.
+A more advanced Stripe tutorial example can be found [here](https://medium.com/consciousapps/integrating-stripe-with-react-graphql-and-apollo-client-e09fdc9e5b95)
+
+We also add [Auth0](https://auth0.com) integration to act as a template a full Promotion/Sales site experience.
 
 [graph.cool Auth0 tutorial](https://www.graph.cool/docs/tutorials/react-apollo-auth0-pheiph4ooj/)
+
+The project is structured and packaged as a [lerna](https://github.com/lerna/lerna) project
 
 ## Getting Started
 
@@ -168,9 +172,14 @@ This is the query:
 
 The default value false for `isPaid` and the missing permission to set `isPaid` when creating a new purchase guarantees that new purchases are automatically unpaid - ensuring that our payment workflow kicks in.
 
-## Create test account on stripe
+### Create test account on stripe
 
-Retrieve test account secrets
+Retrieve test account secrets, something like:
+
+```bash
+TEST_STRIPE_SECRET_KEY=sk_test_XqWFki7E63nnvexW7Aucxxxx
+TEST_STRIPE_PUBLISHABLE_KEY=pk_test_lG8swclqDn3BoODaNWotxxxx
+```
 
 ### Using now for deployment
 
@@ -180,16 +189,58 @@ npm install -g now
 
 Now add the needed secrets:
 
-* `now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`
-* `now secret add gc-pat XXX`
-* `now secret add create-secret XXX`
-* `now secret add charge-secret XXX`
-* `now secret add endpoint https://api.graph.cool/simple/v1/__PROJECT_ID__`
+`$ now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`
 
-Deploy the two microservices:
+In GraphCool console, create an [authentication-token](https://www.graph.cool/docs/reference/auth/authentication-tokens-eip7ahqu5o/)
 
-* `now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@create-secret create/`
-* `now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@charge-secret charge/`
+- Go to Project -> Settings -> Authentication (`/settings/authentication`)
+- Create a new Auth token called `gc-pat`
+
+Should be a very long token string like this:
+
+`aaaaaaaeyJpYXQiOjE0OTQ5NTAzNjQsImNsaWVudElkI4444444InByb2plY3RJZxxxxxxxxAwMTYwdWZhdHV6bHUifQ.lqvwhD1-gsd5orZNfwwGB-LdMAHjpyWWxq5A7_sbcbk`
+
+`$ now secret add gc-pat XXX`
+
+Add custom secrets for `create-secret` and `charge-secret` such as:
+
+- `xyz123` and `abc4567` (only for testing)
+
+`$ now secret add create-secret xyz123`
+`$ now secret add charge-secret abc4567`
+
+Note: `create-secret` and `charge-secret` are used to create a secret URL so not everyone can just invoke your endpointin URL. This can be replaced instead by using an Auth header instead ([@nilan](https://graphcool.slack.com/messages/@nilan/))
+
+### Keys file
+
+You can add secrets in a special `now/secrets.json` file which is included in the `.gitignore` so that is is not shared.
+
+```js
+{
+  "token": "sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`",
+  "create-secret": "xyc",
+  "charge-secret": "123"
+}
+```
+
+To add the keys: `npm run keys` or `node ./now/load.js`
+
+### Add GraphCool endpoint
+
+In GraphCool browser console, click `Endpoints` (bottom left)
+
+`$ now secret add endpoint https://api.graph.cool/simple/v1/__PROJECT_ID__`
+
+Something like: `https://api.graph.cool/simple/v1/ont28601k6x1qe8cj2rlxxxx`
+
+### Deploy the microservices
+
+The following commands are to be issued literally "as is".
+Note: The `@xxx` reference the registered secrets.
+
+`$ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@create-secret create/`
+
+`$ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint TOKEN=@charge-secret charge/`
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 
