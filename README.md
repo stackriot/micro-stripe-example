@@ -346,15 +346,21 @@ subscription {
 }
 ```
 
-Now take the obtained url, add the `create-secret` as a query parameter and paste it to the SSS url. For example:
+### Test SSS
+
+You can test the SSS you created directly in the GraphCool console:
+
+`https://console.graph.cool/YOUR-APP/functions/create`
+
+As you can see in the response, the HTTP data (JSON) received is of the form:
+
+`data.<type>.node` such as `data.Post.node` for a `Post` mutation.
+
+After you have confirmed that the SSS works as you would expect, take the service url, add the value for the `create-secret` secret as a query parameter and paste it to the SSS url. For example:
 
 `https://yourappname-create-customer-xxxx.now.sh?token=XXX`
 
 Please check [subscribing-to-created-nodes](https://www.graph.cool/docs/reference/simple-api/subscribing-to-created-nodes-oe8oqu8eis/)
-
-As you can see in the response, the HTTP data (JSON) received is of the form:
-
-`data.<type>.node` such as `data.Post.node` for a Post mutation.
 
 In the `create` service code, we reference the mutated node as: `data.CardDetails.node`
 
