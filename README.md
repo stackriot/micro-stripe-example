@@ -435,6 +435,43 @@ module.exports = async(req, res) => {
   }
 ```
 
+### Testing mutations
+
+First [Create a test user](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7/#create-a-user)
+
+Save the user `id` for use later.
+
+### Create Card details
+
+Now create a new `CardDetails` node. First [Create a stripe card token](https://stripe.com/docs#try-now) by clicking on the blue `submit` button to the on the card to the right on the screen. The `userId` should reference the test user you just created.
+
+```
+mutation {
+  createCardDetails(
+    cardToken: "tok_19cIRbD7TaYA8JWHv5WIEOiL"
+    userId: "cixyw53tg6i8a0173kx2nrwto"
+  ) {
+    id
+  }
+}
+```
+
+Notice that the response should have the form: `data.CardDetails.node`
+
+### Create a purchase
+
+```
+mutation {
+  createPurchase(
+    amount: 50000,
+    description: "A new laptop",
+    userId: "cixyw53tg6i8a0173kx2nrwto"
+  ) {
+    isPaid
+  }
+}
+```
+
 ### Bonus: Keys file
 
 You can add a special key file to keep track of your secrets as you go.
