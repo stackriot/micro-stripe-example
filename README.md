@@ -193,65 +193,15 @@ Install [now](https://zeit.co/now) by [zeit.co](https://zeit.co) globally:
 npm install -g now
 ```
 
-### Adding secrets
+## Adding secrets
 
 Make sure now is properly installed `now -v`
 
 **trouble shooting**
 
-If `now` doesn't return the version (`5.3` or higher, check if `now` is used for something else in your environment)
+If `now` doesn't return the version (`5.3` or higher, if not maybe `now` is used for something else in your environment!)
 
-In my case, I had an alias `now` (defined in my `~/.bash_profile`) to return the current time!
-
-### Add stripe secret
-
-`$ now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX`
-
-### Add GC Auth token
-
-In GraphCool console, create an [authentication-token](https://www.graph.cool/docs/reference/auth/authentication-tokens-eip7ahqu5o/)
-
-- Go to Project -> Settings -> Authentication (`/settings/authentication`)
-- Create a new Auth token called `gc-pat`
-
-Should be a very long token string like this:
-
-`aaaaaaaeyJpYXQiOjE0OTQ5NTAzNjQsImNsaWVudElkI4444444InByb2plY3RJZxxxxxxxxAwMTYwdWZhdHV6bHUifQ.lqvwhD1-gsd5orZNfwwGB-LdMAHjpyWWxq5A7_sbcbk`
-
-`$ now secret add gc-pat XXX`
-
-Add custom secrets for `create-secret` and `charge-secret` such as:
-
-- `xyz123` and `abc4567` (only for testing)
-
-`$ now secret add create-secret xyz123`
-`$ now secret add charge-secret abc4567`
-
-Note: `create-secret` and `charge-secret` are used to create a secret URL so not everyone can just invoke your endpointin URL. This can be replaced instead by using an Auth header instead ([@nilan](https://graphcool.slack.com/messages/@nilan/))
-
-### Add GraphCool endpoint
-
-In GraphCool browser console, click `Endpoints` (bottom left)
-
-`$ now secret add endpoint https://api.graph.cool/simple/v1/__PROJECT_ID__`
-
-Something like: `https://api.graph.cool/simple/v1/ont28601k6x1qe8cj2rlxxxx`
-
-### Keys file
-
-You can add secrets in a special `now/secrets.json` file which is included in the `.gitignore` so that is is not shared.
-
-```js
-{
-  "gc-path": "aaaaaaaeyJpYXQiOjE0OTQ5NTAzNjQsImNsaWVudElkI4444444InByb2plY3RJZxxxxxxxxAwMTYwdWZhdHV6bHUifQ.lqvwhD1-gsd5orZNfwwGB-LdMAHjpyWWxq5A7_sbcbk",
-  "create-secret": "xyc",
-  "charge-secret": "123",
-  "log": "XXX",
-  "endpoint": "https://api.graph.cool/simple/v1/cj2rloi1xxxxxx"
-}
-```
-
-To add the keys: `npm run keys` or `node ./now/load.js`
+_In my case, I had an alias `now` (defined in my `~/.bash_profile`) to return the current time, so I had to remove it_
 
 ### Stripe secret
 
@@ -271,18 +221,43 @@ $ now secret add stripe-secret sk_test_XXXXXXXXXXXXXXXXXXXXXXXX
 
 ### GC Auth token
 
-```bash
-$ now secret add gc_path eyJ0exxxxxxxxx
+In GraphCool console, create an [authentication-token](https://www.graph.cool/docs/reference/auth/authentication-tokens-eip7ahqu5o/)
 
-> Success! Secret gc_path (xxxxDymjktZGwWHiBQj5vc) added (xxxx@gmail.com)
+- Go to Project -> Settings -> Authentication (`/settings/authentication`)
+- Create a new Auth token called `gc-pat`
+
+Should be a very long token string like this:
+
+`aaaaaaaeyJpYXQiOjE0OTQ5NTAzNjQsImNsaWVudElkI4444444InByb2plY3RJZxxxxxxxxAwMTYwdWZhdHV6bHUifQ.lqvwhD1-gsd5orZNfwwGB-LdMAHjpyWWxq5A7_sbcbk`
+
+
+```bash
+$ now secret add gc-pat eyJ0exxxxxxxxx
+
+> Success! Secret gc-pat (xxxxDymjktZGwWHiBQj5vc) added (xxxx@gmail.com)
 ```
 
-### GC endpoint
+### Add GC endpoint secret
+
+In GraphCool browser console, click `Endpoints` (bottom left)
+
+Endpoint should be something like: `https://api.graph.cool/simple/v1/ont28601k6x1qe8cj2rlxxxx`
 
 ```bash
 $ now secret add endpoint https://api.graph.cool/simple/v1/cj2rloi1xxxxxx
 > Success! Secret endpoint (xxxxFrI5J0LrkTaiOURZwC) added (xxxx@gmail.com)
 ```
+
+### Add custom secrets
+
+Add custom secrets for `create-secret` and `charge-secret` such as:
+
+- `xyz123` and `abc4567` (only for testing)
+
+`$ now secret add create-secret xyz123`
+`$ now secret add charge-secret abc4567`
+
+Note: `create-secret` and `charge-secret` are used to create a secret URL so not everyone can just invoke your endpointin URL. This can be replaced instead by using an Auth header instead ([@nilan](https://graphcool.slack.com/messages/@nilan/))
 
 ... and so on ...
 
@@ -296,7 +271,7 @@ The last argument is the path to the service to be deployed
 
 #### Deploy create service
 
-```
+```bash
 $ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint -e TOKEN=@create-secret -e LOG=@log packages/create/
 
 Deploying ~/repos/micro-stripe-example/packages/create under xxxx@gmail.com
@@ -319,7 +294,9 @@ Notice the `https://stripe-create-customer-example-xxxx.now.sh` (copied to clipb
 
 #### Deploy charge service
 
-```
+Notice all the variables are with capital letters and underscores (_), such as `STRIPE_SECRET` whereas serets are lowercase with dashes (-). Please stick to this convention to minimize chance of errors.
+
+```bash
 $ now -e STRIPE_SECRET=@stripe-secret -e GC_PAT=@gc-pat -e ENDPOINT=@endpoint -e TOKEN=@charge-secret -e LOG=@log packages/charge/
 
 > Deploying ~/repos/micro-stripe-example/packages/charge under xxxx@gmail.com
@@ -374,7 +351,7 @@ Now take the obtained url, add the `create-secret` as a query parameter and past
 
 `https://yourappname-create-customer-xxxx.now.sh?token=XXX`
 
-In the service code we reference the mutated node:
+In the `create` service code we reference the mutated node:
 
 ```js
 module.exports = async(req, res) => {
@@ -432,7 +409,7 @@ Now take the obtained url, add the `charge-secret` as a query parameter and past
 
 `https://yourappname-charge-customer-xxxx.now.sh?token=XXX`
 
-In the service code we reference the incoming mutated node:
+In the `charge` service code we reference the incoming mutated node:
 
 ```js
 module.exports = async(req, res) => {
@@ -452,6 +429,25 @@ module.exports = async(req, res) => {
     // ...
   }
 ```
+
+### Bonus: Keys file
+
+You can add a special key file to keep track of your secrets as you go.
+Then you can experiment with loading secrets into `now` using the `load` tool of this project. Note that some keys require user input.
+
+You can add secrets in a special `now/secrets.json` file which is included in the `.gitignore` so that is is not shared.
+
+```js
+{
+  "gc-pat": "aaaaaaaeyJpYXQiOjE0OTQ5NTAzNjQsImNsaWVudElkI4444444InByb2plY3RJZxxxxxxxxAwMTYwdWZhdHV6bHUifQ.lqvwhD1-gsd5orZNfwwGB-LdMAHjpyWWxq5A7_sbcbk",
+  "create-secret": "xyc",
+  "charge-secret": "123",
+  "log": "XXX",
+  "endpoint": "https://api.graph.cool/simple/v1/cj2rloi1xxxxxx"
+}
+```
+
+To add the keys: `npm run keys` or `node ./now/load.js`
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 
