@@ -23,7 +23,7 @@ module.exports = async(req, res) => {
   } = parse(req.url, true)
 
   if (token === query.token) {
-    const stripeToken = data.createdNode
+    const stripeToken = data.Purchase.node
     const user = stripeToken.stripeTokenToUser
     const userId = user.id
     // Add logs during development, but remember to remove them for production

@@ -333,7 +333,6 @@ subscription {
   CardDetails(filter: {
     mutation_in: [CREATED]
   }) {
-    updatedFields
     node {
       id
       cardToken
@@ -351,14 +350,20 @@ Now take the obtained url, add the `create-secret` as a query parameter and past
 
 `https://yourappname-create-customer-xxxx.now.sh?token=XXX`
 
-In the `create` service code we reference the mutated node:
+Please check [subscribing-to-created-nodes](https://www.graph.cool/docs/reference/simple-api/subscribing-to-created-nodes-oe8oqu8eis/)
+
+As you can see in the response, the HTTP data (JSON) received is of the form:
+
+`data.<type>.node` such as `data.Post.node` for a Post mutation.
+
+In the `create` service code, we reference the mutated node as: `data.CardDetails.node`
 
 ```js
 module.exports = async(req, res) => {
   const data = await json(req)
 
   // extract node data from incoming node
-  const stripeToken = data.node || data.CardDetails.node
+  const stripeToken = data.CardDetails.node
   const user = stripeToken.stripeTokenToUser
   const userId = user.id
   // Add logs during development, but remember to remove them for production
@@ -409,7 +414,7 @@ Now take the obtained url, add the `charge-secret` as a query parameter and past
 
 `https://yourappname-charge-customer-xxxx.now.sh?token=XXX`
 
-In the `charge` service code we reference the incoming mutated node:
+In the `charge` service code we reference the incoming mutated node: `data.Purchase.node`
 
 ```js
 module.exports = async(req, res) => {
@@ -417,7 +422,7 @@ module.exports = async(req, res) => {
     // ...
 
   // extract node data from incoming node
-  const purchase = data.node || data.Purchase.node
+  const purchase = data.Purchase.node
   const purchaseId = purchase.id
   const customerId = purchase.user.stripeId
 
