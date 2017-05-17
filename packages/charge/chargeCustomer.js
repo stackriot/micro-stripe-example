@@ -23,9 +23,9 @@ module.exports = async(req, res) => {
   } = parse(req.url, true)
 
   if (token === query.token) {
-    const purchase = data.createdNode
+    const purchase = data.CardDetails.node
     const purchaseId = purchase.id
-    const customerId = purchase.purchaseToUser.stripeId
+    const customerId = purchase.user.stripeId
 
     // Add logs during development, but remove for production
     console.log('Purchase Object');

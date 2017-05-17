@@ -345,7 +345,7 @@ When new card details are created, create corresponding Stripe customer
 
 We add a new SSS with the trigger `CardDetails is created`. This SSS creates a new Stripe customer whenever new card details are created
 
-- See [server side subscriptions](https://www.graph.cool/docs/reference/functions/server-side-subscriptions-ahlohd8ohn/)
+- See [Server Side Subscriptions](https://www.graph.cool/docs/reference/functions/server-side-subscriptions-ahlohd8ohn/)
 
 - Select `CardDetails` as the trigger type
 
@@ -359,15 +359,99 @@ subscription {
     updatedFields
     node {
       id
+      cardToken
+      user {
+        id
+        email
+        name
+      }
     }
   }
 }
 ```
 
-Now take the obtained url, add the create-secret as a query parameter and paste it to the SSS url. For example:
+Now take the obtained url, add the `create-secret` as a query parameter and paste it to the SSS url. For example:
 
 `https://yourappname-create-customer-xxxx.now.sh?token=XXX`
 
+In the service code we reference the mutated node:
+
+```js
+module.exports = async(req, res) => {
+  const data = await json(req)
+
+  // extract node data from incoming node
+  const stripeToken = data.node || data.CardDetails.node
+  const user = stripeToken.stripeTokenToUser
+  const userId = user.id
+  // Add logs during development, but remember to remove them for production
+  console.log('Stripe Token object');
+  console.log(stripeToken);
+
+  // TODO: don't create customer if stripe id already exists
+
+  // first, create a new Stripe customer
+  stripe.customers.create({
+    // ...
+  }, (err, customer) => {
+    // then update user with obtained Stripe customer id
+    const updateUser = `mutation {
+      updateUser(id: "${userId}", stripeId: "${customer.id}") {
+        id
+      }
+    }`
+    request.post({
+      // ...
+      body: JSON.stringify({query: updateUser}),
+      // ...
+})
+```
+
+### Charge customer service
+
+We create a new subscription for when a purchase is created, linking it to the charge customer now service (endpoint)
+
+```
+subscription {
+  Purchase(filter: {
+    mutation_in: [CREATED]
+  }) {
+  node {
+    id
+    user {
+      stripeId
+    }
+    amount
+    description
+    isPaid
+  }
+}
+```
+
+Now take the obtained url, add the `charge-secret` as a query parameter and paste it to the SSS url. For example:
+
+`https://yourappname-charge-customer-xxxx.now.sh?token=XXX`
+
+In the service code we reference the incoming mutated node:
+
+```js
+module.exports = async(req, res) => {
+  const data = await json(req)
+    // ...
+
+  // extract node data from incoming node
+  const purchase = data.node || data.Purchase.node
+  const purchaseId = purchase.id
+  const customerId = purchase.user.stripeId
+
+  // Add logs during development, but remove for production
+  console.log('Purchase Object');
+  console.log(purchase);
+
+  if (purchase.isPaid) {
+    // ...
+  }
+```
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 
