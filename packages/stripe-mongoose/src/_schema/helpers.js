@@ -46,7 +46,7 @@ function refListC(objType, opts = {}) {
 function enums(list, opts = {}) {
   return Object.assign({}, opts, {
     type: String,
-    enum: ['dev', 'test', 'stage', 'prod']
+    enum: list
   })
 }
 

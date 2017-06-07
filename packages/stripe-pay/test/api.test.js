@@ -11,7 +11,9 @@ import {
   createSkus,
   createSources,
   createTransfers,
-  createRecipients
+  createRecipients,
+  createSubscriptions,
+  createSubscriptionItems
 }
 from '../'
 
@@ -26,7 +28,9 @@ let factories = [
   createSkus,
   createSources,
   createTransfers,
-  createRecipients
+  createRecipients,
+  createSubscriptions,
+  createSubscriptionItems
 ]
 
 test('api', t => {

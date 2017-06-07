@@ -3,6 +3,6 @@ const {
   createSchema
 } = require('../_schema')
 
-createSchema('SubscriptionItem', {
+createSchema('Subscription', {
   schema
 });

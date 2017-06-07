@@ -7,10 +7,15 @@ mongoose.Promise = global.Promise;
 const deepPopulate = require('mongoose-deep-populate')(mongoose)
 const findOrCreate = require('mongoose-findorcreate')
 const softDelete = require('mongoose-delete')
+const times = require('mongoose-delete')
 
 mongoose.plugin(deepPopulate)
 mongoose.plugin(findOrCreate)
 mongoose.plugin(softDelete)
+
+// created and lastUpdated timestamps
+// https://www.npmjs.com/package/mongoose-times
+mongoose.plugin(times)
 
 module.exports = function (config) {
   // console.log('models init', config)

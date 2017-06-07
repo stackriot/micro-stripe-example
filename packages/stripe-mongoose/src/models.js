@@ -6,6 +6,7 @@ const schemas = [
   'Plan',
   'Product',
   'Subscription',
+  'SubscriptionItem'
 ]
 
 let exported = schemas.reduce((acc, model) => {
