@@ -1,52 +1,17 @@
-import stripe from '../stripe'
-
 import {
-  Loggable
-} from '../loggable'
+  Collection
+} from '../collection'
 
 export function createCustomers(config, opts) {
   return new Customers(config, opts)
 }
 
-export class Customers extends Loggable {
-  constructor(config, opts) {
-    super('Customer', opts)
-    this.config = config
-    this.opts = opts
-
-    this.customers = stripe.customers
-
-    // default in-memory storage
-    this.store = {}
+class Customers extends Collection {
+  constructor(config, opts = {}) {
+    super('Customers', 'customers', config, opts)
   }
 
-  extractId(customer) {
-    return customer.email
-  }
-
-  // default in-memory storage
-  async storeCustomer(customer) {
-    let id = this.extractId(customer)
-    this.store[id] = customer
-  }
-
-  // profile
-  // {
-  //   email: "jenny.rosen@example.com",
-  // }
-  async create(profile) {
-    try {
-      let validated = await this.validate(profile)
-      if (!validated) {
-        this.handleError('validation error', validated)
-      }
-      return await stripe.customers.create(profile)
-    } catch (err) {
-      return err
-    }
-  }
-
-  async validate(profile) {
-    return typeof profile === 'object'
+  async validateNew(data) {
+    return typeof data === 'object'
   }
 }

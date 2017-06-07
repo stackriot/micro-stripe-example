@@ -1,55 +1,14 @@
-import stripe from '../stripe'
-
 import {
-  Loggable
-} from '../loggable'
+  Collection
+} from '../collection'
 
 export function createOrders(config, opts) {
   return new Orders(config, opts)
 }
 
-export class Orders extends Loggable {
+export class Orders extends Collection {
   constructor(config, opts) {
-    super('Orders', opts)
-    this.config = config
-    this.opts = opts
-
-    this.orders = stripe.orders
-
-    // default in-memory storage
-    this.store = {}
-  }
-
-  extractId(order) {
-    return order.id
-  }
-
-  // default in-memory storage
-  async storeOrder(order) {
-    let id = this.extractId(order)
-    this.store[id] = order
-  }
-
-
-  async retrieve(id) {
-    try {
-      return await this.orders.retrieve(id)
-    } catch (err) {
-      this.handleError(err, {
-        id
-      })
-    }
-  }
-
-  async update(id, order) {
-    try {
-      return await this.orders.update(id, order)
-    } catch (err) {
-      this.handleError(err, {
-        id,
-        order
-      })
-    }
+    super('Orders', 'orders', config, opts)
   }
 
   // https://stripe.com/docs/api/node#pay_order
@@ -58,9 +17,15 @@ export class Orders extends Loggable {
   // }
   async pay(id, source) {
     try {
-      return await this.orders.pay(id, {
+      // TODO: lookup order by id
+      // TODO: lookup source by id
+      await this.validatePayment(id, source)
+
+      let paid = await this.orders.pay(id, {
         source
       })
+      this.notify('paid', paid)
+      return paid
     } catch (err) {
       this.handleError(err, {
         id,
@@ -69,42 +34,13 @@ export class Orders extends Loggable {
     }
   }
 
-  // list all orders
-  async list(criteria = {}) {
-    try {
-      return await this.orders.list(criteria)
-    } catch (err) {
-      this.handleError(err, {
-        criteria
-      })
-    }
+  // TODO
+  async validatePayment(id, source) {
+    return true
   }
 
-
-  // See: https://stripe.com/docs/api/node#create_order
-  // profile
-  // currency: 'usd',
-  //   items: [
-  //     {
-  //       type: 'sku',
-  //       parent: '-Km0jSQ_dFCM7bkuw242'
-  //     }
-  //   ],
-  //   shipping: {
-  //   }
-  async create(order) {
-    try {
-      let validated = await this.validate(order)
-      if (!validated) {
-        this.handleError('validation error', validated)
-      }
-      return await this.orders.create(order)
-    } catch (err) {
-      return err
-    }
-  }
-
-  async validate(order) {
-    return typeof order === 'object'
+  // validate order being created
+  async validateNew(data) {
+    return typeof data === 'object'
   }
 }

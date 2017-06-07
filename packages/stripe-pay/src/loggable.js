@@ -7,6 +7,14 @@ export class Loggable {
     this.name = name || opts.name
   }
 
+  notify(method, data) {
+    this.publish({
+      topic: 'orders',
+      method,
+      data
+    })
+  }
+
   on(eventName, observer) {
     this.log('on', eventName, observer)
     let slot = this.observers[eventName] || []
