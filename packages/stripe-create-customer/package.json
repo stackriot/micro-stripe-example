@@ -1,15 +1,16 @@
 {
-  "name": "stripe-create-customer-example",
+  "name": "@tecla5/stripe-create-customer",
   "version": "1.0.0",
-  "private": "true",
+  "private": true,
   "description": "Create customer at Stripe and charge him for later purchases",
-  "main": "createCustomer.js",
+  "main": "src/index.js",
   "dependencies": {
     "micro": "^6.2.0",
     "now-logs": "0.0.7",
     "request": "^2.79.0",
     "stripe": "^4.14.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "@tecla5/stripe-pay": "^0.1.0"
   },
   "scripts": {
     "start": "micro"

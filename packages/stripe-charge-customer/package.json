@@ -1,15 +1,15 @@
 {
-  "name": "stripe-charge-customer-example",
+  "name": "@tecla5/stripe-charge-customer",
   "version": "1.0.0",
-  "private": "true",
   "description": "Charge a Stripe customer money for a specific purchase",
-  "main": "chargeCustomer.js",
+  "main": "src/index.js",
   "dependencies": {
     "micro": "^6.2.0",
     "now-logs": "0.0.7",
     "request": "^2.79.0",
     "stripe": "^4.14.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "@tecla5/stripe-pay": "^0.1.0"
   },
   "scripts": {
     "start": "micro"

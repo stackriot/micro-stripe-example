@@ -279,7 +279,7 @@ Deploying ~/repos/micro-stripe-example/packages/create under xxxx@gmail.com
 > Ready! https://stripe-create-customer-example-xxxx.now.sh (copied to clipboard) [4s]
 > You (xxx@gmail.com) are on the OSS plan. Your code will be made public.
 > Upload [====================] 100% 0.0s
-> Sync complete (2.01kB) [2m] 
+> Sync complete (2.01kB) [2m]
 > Initializing…
 > Building
 > ▲ npm install
@@ -328,7 +328,7 @@ We add a new SSS with the trigger `CardDetails is created`. This SSS creates a n
 
 Now filter only on `CREATED` mutations...
 
-```
+```text
 subscription {
   CardDetails(filter: {
     mutation_in: [CREATED]
@@ -399,7 +399,7 @@ module.exports = async(req, res) => {
 
 We create a new subscription for when a purchase is created, linking it to the charge customer now service (endpoint)
 
-```
+```text
 subscription {
   Purchase(filter: {
     mutation_in: [CREATED]
@@ -451,7 +451,7 @@ Save the user `id` for use later.
 
 Now create a new `CardDetails` node. First [Create a stripe card token](https://stripe.com/docs#try-now) by clicking on the blue `submit` button to the on the card to the right on the screen. The `userId` should reference the test user you just created.
 
-```
+```text
 mutation {
   createCardDetails(
     cardToken: "tok_19cIRbD7TaYA8JWHv5WIEOiL"
@@ -466,7 +466,7 @@ Notice that the response should have the form: `data.CardDetails.node`
 
 ### Create a purchase
 
-```
+```text
 mutation {
   createPurchase(
     amount: 50000,

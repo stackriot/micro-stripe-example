@@ -54,7 +54,24 @@ import {
 from '@tecla5/stripe-pay'
 ```
 
-### Invoice
+### Customers
+
+Usage:
+
+```js
+let customers = createCustomers(config, opts)
+
+// store invoice in custom store/colletion on successful creation
+customers.on('create', store.customers.create)
+
+let customer = await customers.create(customerDetails)
+```
+
+Docs:
+
+- [Customers](https://stripe.com/docs/api#customers)
+
+### Invoices
 
 Usage:
 
@@ -72,7 +89,7 @@ Docs:
 - [Invoices](https://stripe.com/docs/api#invoices)
 - [Invoice items](https://stripe.com/docs/api#invoiceitems)
 
-### Plan
+### Plans
 
 Usage:
 
@@ -89,8 +106,56 @@ Docs:
 
 - [Plans](https://stripe.com/docs/api#plans)
 
-### Subscribe
+### Charges
 
-## Testing
+Usage:
 
-[subscriptions testing](https://stripe.com/docs/subscriptions/testing)
+```js
+let charges = createCharges(config, opts)
+
+// store invoice in custom store/colletion on successful creation
+charges.on('create', store.charges.create)
+
+let charge = await charges.create(chargeDetails)
+```
+
+Docs:
+
+- [Charges](https://stripe.com/docs/api#charges)
+
+### SKUs
+
+[Stock Keeping Units](https://en.wikipedia.org/wiki/Stock_keeping_unit)
+
+Usage:
+
+```js
+let skus = createSkus(config, opts)
+
+// store invoice in custom store/colletion on successful creation
+skus.on('create', store.skus.create)
+
+let sku = await skus.create(chargeDetails)
+```
+
+Docs:
+
+- [Charges](https://stripe.com/docs/api#charges)
+
+### Subscriptions
+
+Usage:
+
+```js
+let subscriptions = createSubscriptions(config, opts)
+
+// store invoice in custom store/colletion on successful creation
+subscriptions.on('create', store.subscriptions.create)
+
+let subscription = await plans.create(subscriptionDetails)
+```
+
+Docs:
+
+- [Subscriptions](https://stripe.com/docs/api#subscriptions)
+- [Subscriptions testing](https://stripe.com/docs/subscriptions/testing)
