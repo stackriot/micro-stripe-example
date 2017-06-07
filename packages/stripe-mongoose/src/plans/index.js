@@ -1,13 +1,13 @@
 import {
-  Customer
+  Plan
 } from '../models'
 
-function createCustomers(opts) {
-  return new Customers(opts)
+function createPlans(opts) {
+  return new Plans(opts)
 }
 
-class Customers extends Collection {
+class Plans extends Collection {
   constructor(opts = {}) {
-    super(Customer, opts)
+    super(Plan, opts)
   }
 }
