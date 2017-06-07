@@ -1,4 +1,31 @@
-# micro-stripe-example
+# Striped suite
+
+Collection of modules for using [Stripe](https://stripe.com) as:
+
+- [now micro services](http://www.nowmicro.com/)
+
+With:
+
+- customer creation and payment charging
+
+Using:
+
+- [Mongoose](http://mongoosejs.com/) based data store
+- Promised based Stripe API wrapper using [stripe-as-promised](https://github.com/bendrucker/stripe-as-promised)
+
+## Modules included
+
+Micro services configured for [GraphCool](https://www.graph.cool/):
+
+- `@tecla5/stripe-charge-customer`
+- `@tecla5/stripe-create-customer`
+
+Stripe
+
+- `@tecla5/stripe-pay`
+- `@tecla5/stripe-mongoose`
+
+## Micro Services
 
 Example usage of [Graphcool](https://www.graph.cool) mutation callbacks to implement a custom Stripe payment workflow.
 

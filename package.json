@@ -1,5 +1,5 @@
 {
-  "name": "micro-stripe-example",
+  "name": "@tecla5/striped-suite",
   "scripts": {
     "keys": "./now/load.js"
   },
