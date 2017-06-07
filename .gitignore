@@ -2,5 +2,5 @@ node_modules
 .idea/
 now/secrets.json
 *.log
-nyc_coverage
+.nyc_output
 coverage
