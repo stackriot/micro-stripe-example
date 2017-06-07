@@ -14,8 +14,10 @@ export class Customers extends Loggable {
     this.config = config
     this.opts = opts
 
+    this.customers = stripe.customers
+
     // default in-memory storage
-    this.customers = {}
+    this.store = {}
   }
 
   extractId(customer) {
@@ -25,7 +27,7 @@ export class Customers extends Loggable {
   // default in-memory storage
   async storeCustomer(customer) {
     let id = this.extractId(customer)
-    this.customers[id] = customer
+    this.store[id] = customer
   }
 
   // profile

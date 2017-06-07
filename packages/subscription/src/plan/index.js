@@ -28,9 +28,19 @@ export class Plan extends Loggable {
   // }
   async create(plan) {
     try {
-      return await this.plans.create(plan)
+      let created = await this.plans.create(plan)
+      this.publish('plan:created', created)
+      return created
     } catch (err) {
       this.handleError(err, plan)
     }
   }
+
+  async createAll(plans) {
+    // create multiple plans
+    if (Array.isArray(plan)) {
+      await Promise.all(plan.map(async p => await this.create(p)))
+    }
+  }
+
 }
