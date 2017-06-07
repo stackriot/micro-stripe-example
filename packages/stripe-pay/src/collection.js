@@ -28,8 +28,16 @@ class StripeCollection extends Loggable {
     this.store = {}
   }
 
+  notify(method, data) {
+    this.publish({
+      topic: this.collection,
+      method,
+      data
+    })
+  }
+
   extractId(data) {
-    return data.email
+    return data.email || data.id
   }
 
   // default in-memory storage

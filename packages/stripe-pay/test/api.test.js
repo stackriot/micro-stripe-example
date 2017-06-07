@@ -6,7 +6,12 @@ import {
   createInvoices,
   createPlans,
   createOrders,
-  createProducts
+  createProducts,
+  createCharges,
+  createSkus,
+  createSources,
+  createTransfers,
+  createRecipients
 }
 from '../'
 
@@ -16,7 +21,12 @@ let factories = [
   createInvoices,
   createPlans,
   createOrders,
-  createProducts
+  createProducts,
+  createCharges,
+  createSkus,
+  createSources,
+  createTransfers,
+  createRecipients
 ]
 
 test('api', t => {
