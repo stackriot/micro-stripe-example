@@ -2,7 +2,8 @@ import stripe from '../stripe'
 
 class Invoice extends Loggable {
   constructor(config, opts = {}) {
-    super(config, opts)
+    super('Invoice', opts)
+    this.invoices = stripe.invoiceItems
   }
   // order:
   // {
@@ -13,7 +14,7 @@ class Invoice extends Loggable {
   // }
   async create(order, opts = {}) {
     try {
-      return await stripe.invoiceItems.create(order)
+      return await this.invoices.create(order)
     } catch (err) {
       return err
     }

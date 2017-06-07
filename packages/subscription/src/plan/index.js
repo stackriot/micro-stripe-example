@@ -14,7 +14,7 @@ export function createPlan(config, opts) {
 
 export class Plan extends Loggable {
   constructor(config, opts = {}) {
-    super(config, opts)
+    super('Plan', opts)
     this.plans = stripe.plans
   }
 
@@ -42,5 +42,4 @@ export class Plan extends Loggable {
       await Promise.all(plan.map(async p => await this.create(p)))
     }
   }
-
 }
