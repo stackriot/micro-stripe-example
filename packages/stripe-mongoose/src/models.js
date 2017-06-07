@@ -3,6 +3,7 @@ const schemas = [
   'Customer',
   'Invoice',
   'Order',
+  'OrderItems',
   'Plan',
   'Product',
   'Subscription',

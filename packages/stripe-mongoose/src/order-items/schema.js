@@ -5,7 +5,7 @@ const {
 } = require('../_schema/helpers')
 
 module.exports = {
-  id: required(String),
-  plan: ref('Plan'),
-  quantity: Number
+  name: required(String),
+  email: required(String),
+  description: String
 }

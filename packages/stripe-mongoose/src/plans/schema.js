@@ -1,11 +1,18 @@
 const {
   required,
   ref,
-  refList
+  refList,
+  enums
 } = require('../_schema/helpers')
 
 module.exports = {
-  name: required(String),
-  email: required(String),
-  description: String
+  id: required(String),
+  name: String,
+  amount: Number,
+  currency: String,
+  interval: enums('day', 'week', 'month', 'year'),
+  interval_count: Number,
+  description: String,
+  statement_descriptor: String,
+  trial_period_days: Number
 }

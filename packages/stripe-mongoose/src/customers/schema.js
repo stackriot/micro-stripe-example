@@ -10,7 +10,7 @@ module.exports = {
   name: required(String),
   email: required(String),
   description: String,
-  account_balance: Integer,
+  account_balance: Number,
   currency: String,
   delinquent: Boolean,
   business_vat_id: String,

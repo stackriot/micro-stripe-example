@@ -1,6 +1,8 @@
 const models = require('mongoose-models')
 const mongoose = require('mongoose')
-const ObjectId = mongoose.Schema.Types.ObjectId
+const Types = mongoose.Schema.Types
+const ObjectId = Types.ObjectId
+const Mixed = Types.Mixed
 
 // See: Validation
 // http://mongoosejs.com/docs/validation.html
@@ -62,6 +64,9 @@ const description = {
 }
 
 module.exports = {
+  Types,
+  ObjectId,
+  Mixed,
   required,
   name,
   description,

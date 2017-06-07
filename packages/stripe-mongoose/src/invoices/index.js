@@ -10,4 +10,8 @@ class Invoices extends Collection {
   constructor(opts = {}) {
     super(Invoice, opts)
   }
+
+  async pay() {
+    this.handleError('Invoices.pay: TODO')
+  }
 }

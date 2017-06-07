@@ -1,17 +1,19 @@
 const {
   required,
   ref,
-  refList
+  refList,
+  enums
 } = require('../_schema/helpers')
 
+// See: https://stripe.com/docs/api#invoice_line_item_object
 module.exports = {
   id: required(String),
   currency: String,
   discountable: Boolean,
   date: Date,
-  type: enum('subscription'),
+  type: enums('subscription', 'invoiceitem'),
   proration: Boolean,
-  quantity: Integer,
+  quantity: Number,
   subscription: ref('Subscription'),
   // subscription_item: ref('SubscriptionItem'),
   description: String
