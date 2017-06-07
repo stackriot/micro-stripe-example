@@ -10,4 +10,8 @@ class Invoices extends Collection {
   constructor(config, opts = {}) {
     super('Invoice', 'invoices', config, opts)
   }
+
+  async delete(id) {
+    this.handleError('Invoices can NOT be deleted', id)
+  }
 }

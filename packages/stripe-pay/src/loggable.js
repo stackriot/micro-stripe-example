@@ -14,6 +14,15 @@ export class Loggable {
     return this
   }
 
+  onAll(eventNames, observer) {
+    if (Array.isArray(eventNames)) {
+      eventNames.map(e => this.on(e, observer))
+      return this
+    } else {
+      this.handleError('onAll: first argument must be a list (Array) of event names to observe', eventNames)
+    }
+  }
+
   publish(eventName, args) {
     this.log('publish', eventName, args)
     this.observers = this.observers || {}
@@ -28,6 +37,9 @@ export class Loggable {
 
   handleError(err, ...data) {
     this.error(err, ...data)
+    if (this.notify) {
+      this.notify('error', data)
+    }
     throw err
   }
 

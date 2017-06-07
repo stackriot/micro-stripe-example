@@ -3,4 +3,5 @@ node_modules
 *.log
 .nyc_output
 coverage
-dist
+test
+src

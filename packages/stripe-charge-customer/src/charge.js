@@ -1,12 +1,19 @@
-const {
+import {
   send
-} = require('micro')
+} from 'micro'
+
+import {
+  createCharges
+} from '@tecla5/stripe-pay'
+
+const charges = createCharges({
+  currency: 'usd'
+})
 
 export async function charge(customerId, purchase) {
   try {
-    return await stripe.charges.create({
+    return await charges.create({
       amount: purchase.amount,
-      currency: 'usd',
       description: purchase.description,
       customer: customerId,
     })

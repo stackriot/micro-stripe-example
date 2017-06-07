@@ -4,7 +4,9 @@ import {
   Loggable
 } from '../loggable'
 
-class StripeCollection extends Loggable {
+export class Collection extends Loggable {
+  // config is used as the baseline object for operations
+  // use it to fx set the default currency used, etc
   constructor(name, colName, config, opts) {
     super(name, opts)
     this.config = config
@@ -58,8 +60,22 @@ class StripeCollection extends Loggable {
     }
   }
 
+  prepare(data) {
+    let base = this.config || {}
+    return Object.assign({}, base, data)
+  }
+
   async update(id, data) {
     try {
+      data = this.prepare(data)
+      let validated = await this.validateNew(data)
+      if (!validated) {
+        this.handleError('validation error', {
+          data,
+          validated
+        })
+      }
+
       let method = this.methods.update
       let fun = this.collection[method]
       let updated = await fun(id, data)
@@ -109,6 +125,7 @@ class StripeCollection extends Loggable {
   // }
   async create(data, opts = {}) {
     try {
+      data = this.prepare(data)
       let validated = await this.validateNew(data)
       if (!validated) {
         this.handleError('validation error', {

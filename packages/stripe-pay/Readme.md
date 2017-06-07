@@ -79,10 +79,13 @@ Usage:
 let invoices = createInvoices(config, opts)
 
 // store invoice in custom store/colletion on successful creation
-invoices.on('create', store.invoices.create)
+invoices.on('created', store.invoices.create)
+invoices.onAll(['created', 'updated'], invoices.created.send)
 
 let invoice = await invoices.create(invoiceDetails)
 ```
+
+Note: You can NOT `delete` an invoice
 
 Docs:
 
