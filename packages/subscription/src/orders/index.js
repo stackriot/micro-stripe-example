@@ -4,8 +4,8 @@ import {
   Loggable
 } from '../loggable'
 
-export function createOrders() {
-  return new Orders()
+export function createOrders(config, opts) {
+  return new Orders(config, opts)
 }
 
 export class Orders extends Loggable {

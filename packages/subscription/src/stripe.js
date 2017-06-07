@@ -1,6 +1,6 @@
-var Promise = require('native-promise-only')
-// var Stripe = window.Stripe
-var Stripe = require('stripe')(process.env.STRIPE_SECRET)
-var stripe = stripeAsPromised(Stripe, Promise)
+import Promise from 'native-promise-only'
+import stripeAsPromised from 'stripe-as-promised'
+import stripe from 'stripe'
 
-module.exports = stripe
+const Stripe = stripe(process.env.STRIPE_SECRET)
+export default stripeAsPromised(stripe, Promise)

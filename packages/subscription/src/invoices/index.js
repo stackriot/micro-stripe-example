@@ -1,6 +1,14 @@
 import stripe from '../stripe'
 
-class Invoice extends Loggable {
+import {
+  Loggable
+} from '../loggable'
+
+export function createInvoices(config, opts) {
+  return new Invoices(config, opts)
+}
+
+class Invoices extends Loggable {
   constructor(config, opts = {}) {
     super('Invoice', opts)
     this.invoices = stripe.invoiceItems

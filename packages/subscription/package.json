@@ -1,9 +1,19 @@
 {
-  "name": "stripe-charge-customer-example",
+  "name": "@tecla5/stripe-payments",
   "version": "1.0.0",
-  "private": "true",
-  "description": "Charge a Stripe customer money for a specific purchase",
-  "main": "chargeCustomer.js",
+  "private": true,
+  "description": "Stripe payments API with subscription plans",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "nyc ava",
+    "start": "micro",
+    "build:prod": "webpack --progress --colors --display-error-details --env=prod",
+    "build:dev": "webpack --progress --colors --display-error-details --env=dev"
+
+  },
   "dependencies": {
     "micro": "^6.2.0",
     "native-promise-only": "^0.8.1",
@@ -13,7 +23,50 @@
     "stripe-as-promised": "^2.1.1",
     "url": "^0.11.0"
   },
-  "scripts": {
-    "start": "micro"
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-compact-reexports": "^0.1.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.3.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babili": "0.0.12",
+    "babili-webpack-plugin": "0.0.11",
+    "mock-local-storage": "^1.0.2",
+    "nyc": "^11.0.2",
+    "webpack": "^2.5.1",
+    "webpack-merge": "^4.1.0"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-runtime"
+    ]
+  },
+  "ava": {
+    "files": [
+      "test/**/*.test.js"
+    ],
+    "concurrency": 1,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "tap": true,
+    "powerAssert": false,
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ],
+    "babel": "inherit"
   }
 }

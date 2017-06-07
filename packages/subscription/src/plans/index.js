@@ -4,15 +4,11 @@ import {
   Loggable
 } from '../loggable'
 
-import {
-  createSubscriptions
-} from './subscriptions'
-
-export function createPlan(config, opts) {
-  return new Plan(config, opts)
+export function createPlans(config, opts) {
+  return new Plans(config, opts)
 }
 
-export class Plan extends Loggable {
+export class Plans extends Loggable {
   constructor(config, opts = {}) {
     super('Plan', opts)
     this.plans = stripe.plans

@@ -2,6 +2,15 @@
 
 Stripe Subscription services.
 
+## Entities
+
+- Customers
+- Customer
+- Order
+- Plan
+- Product
+
+
 ### Invoice
 
 ### Plan

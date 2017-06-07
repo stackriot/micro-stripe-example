@@ -4,8 +4,8 @@ import {
   Loggable
 } from '../loggable'
 
-export function createCustomer() {
-  return new Customer()
+export function createCustomer(profile, opts) {
+  return new Customer(profile, opts)
 }
 export class Customer extends Loggable {
   constructor(profile, opts) {

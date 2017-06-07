@@ -4,11 +4,11 @@ import {
   Loggable
 } from '../loggable'
 
-export function createCustomers() {
-  return new Customers()
+export function createProducts(config, opts) {
+  return new Products(config, opts)
 }
 
-export class Product extends Loggable {
+export class Products extends Loggable {
   constructor(config, opts) {
     super('Product', opts)
     this.products = stripe.products
