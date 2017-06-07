@@ -1,5 +1,5 @@
 {
-  "name": "@tecla5/stripe-payments",
+  "name": "@tecla5/stripe-pay",
   "version": "1.0.0",
   "private": true,
   "description": "Stripe payments API with subscription plans",
