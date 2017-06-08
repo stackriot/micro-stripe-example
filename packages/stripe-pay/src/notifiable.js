@@ -5,8 +5,12 @@ import {
 export class Notifiable extends Loggable {
   constructor(name, opts) {
     super(name, opts)
-    this.topic = opts.topic || 'default'
+    this.topic = opts.topic || this.defaultTopic
     this.observers = {}
+  }
+
+  get defaultTopic() {
+    return 'default'
   }
 
   notify(event, data) {
@@ -43,6 +47,7 @@ export class Notifiable extends Loggable {
       event,
       status
     } = criteria
+    topic = topic || this.topic
     this.observers[topic] = this.observers[topic] || {}
     this.observers[topic][event] = this.observers[topic][event] || {}
 
@@ -57,30 +62,52 @@ export class Notifiable extends Loggable {
     return this
   }
 
-  on(eventName, observer) {
-    this.log('on', eventName, observer)
-    if (typeof eventName === 'object') {
-      let criteria = eventName
+  onStatus(event, status, observer) {
+    let criteria
+    if (typeof event === 'object') {
+      criteria = event
+    } else {
+      criteria = {
+        event
+      }
+    }
+    criteria.status = status
+    return this.onCriteria(criteria, observer)
+  }
+
+  onSuccess(criteria, observer) {
+    return this.onStatus(criteria, 'success', observer)
+  }
+
+  onFailure(criteria, observer) {
+    return this.onStatus(criteria, 'failure', observer)
+  }
+
+  on(event, observer) {
+    this.log('on', event, observer)
+    if (typeof event === 'object') {
+      let criteria = event
       return this.onCriteria(criteria, observer)
     }
-    let slot = this.observers[eventName] || []
-    this.observers[eventName] = slot.concat(observer)
+    let slot = this.observers[event] || []
+    this.observers[event] = slot.concat(observer)
     return this
   }
 
-  onAll(eventNames, observer) {
-    if (Array.isArray(eventNames)) {
-      eventNames.map(e => this.on(e, observer))
+  onAll(events, observer) {
+    if (Array.isArray(events)) {
+      events.map(event => this.on(event, observer))
       return this
     } else {
-      this.handleError('onAll: first argument must be a list (Array) of event names to observe', eventNames)
+      this.handleError('onAll: first argument must be a list (Array) of events to observe', eventNames)
     }
   }
 
   publishCriteria(criteria, data) {
     this.log('publishCriteria', criteria, data)
     if (typeof criteria === 'string') {
-      return this.publish(eventName, data)
+      let event = criteria
+      return this.publish(event, data)
     }
     let {
       topic,
@@ -105,20 +132,20 @@ export class Notifiable extends Loggable {
     return this
   }
 
-  publish(eventName, data) {
-    this.log('publish', eventName, data)
+  publish(event, data) {
+    this.log('publish', event, data)
 
-    if (typeof eventName === 'object') {
-      let criteria = this._criteria(eventName, data)
+    if (typeof event === 'object') {
+      let criteria = this._criteria(event, data)
       this.publishCriteria(criteria, data)
     }
 
     this.observers = this.observers || {}
-    let observers = this.observers[eventName] || []
+    let observers = this.observers[event] || []
     if (observers) {
       observers.map(observer => observer(data))
     } else {
-      this.log('no observers registered for', eventName)
+      this.log('no observers registered for', event)
     }
     return this
   }

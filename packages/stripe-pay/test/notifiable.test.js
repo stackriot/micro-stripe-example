@@ -43,7 +43,7 @@ test('Notifiable: subscribe to and publish topic/event', t => {
   notifiable.publish(criteria, 'hi')
 })
 
-test('Notifiable: subscribe to and publish topic/event status', t => {
+test('Notifiable: subscribe to and publish topic/event status:error', t => {
   let observer = (data) => {
     t.is(data, 'hi')
   }
@@ -55,4 +55,22 @@ test('Notifiable: subscribe to and publish topic/event status', t => {
   }
   notifiable.on(criteria, observer)
   notifiable.publish(criteria, 'hi')
+})
+
+test('Notifiable: subscribe to and notify success', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+
+  notifiable.onSuccess('hello', observer)
+  notifiable.notifySuccess('hello', 'hi')
+})
+
+test('Notifiable: subscribe to and notify failure', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+
+  notifiable.onFailure('hello', observer)
+  notifiable.notifyFailure('hello', 'hi')
 })
