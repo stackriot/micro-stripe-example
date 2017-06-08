@@ -19,8 +19,7 @@
     "native-promise-only": "^0.8.1",
     "now-logs": "0.0.7",
     "request": "^2.79.0",
-    "stripe": "^4.19.1",
-    "stripe-as-promised": "^2.1.1",
+    "stripe": "^4.22.0",
     "url": "^0.11.0",
     "mixwith": "^0.1.1"
   },

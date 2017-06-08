@@ -20,6 +20,10 @@ export STRIPE_SECRET="sk_test_AQokikJOvDFgeHlWgH4gjey3"
 
 Now start a new Terminal session and the variable `STRIPE_SECRET` should be (globally) defined and accessible from Node.js environment as `process.env.STRIPE_SECRET`
 
+## Promises
+
+Stripe already [supports promises](https://github.com/stripe/stripe-node#using-promises)
+
 ## Entities
 
 Currently support the following:
@@ -162,3 +166,55 @@ Docs:
 
 - [Subscriptions](https://stripe.com/docs/api#subscriptions)
 - [Subscriptions testing](https://stripe.com/docs/subscriptions/testing)
+
+## Browser: Stripe as promised
+
+[stripe-as-promised](https://www.npmjs.com/package/stripe-as-promised) is for using [Stripe.js](https://stripe.com/docs/stripe.js) in browsers with promises. The browser library only contains a small subset of functions.
+
+It is based on [stripe-errback](https://github.com/bendrucker/stripe-errback/blob/master/index.js) using [pify](https://www.npmjs.com/package/pify)
+
+```js
+var stripeErrback = require('stripe-errback')
+var dot = require('dot-prop')
+var pify = require('pify')
+
+module.exports = promisify
+
+function promisify (stripe, Promise) {
+  stripeErrback.methods.async.forEach(function (path) {
+    var fn = dot.get(stripe, path)
+    dot.set(stripe, path, pify(fn, Promise))
+  })
+
+  return stripe
+}
+```
+
+We need to enhance promise support across most of the stripe API, by extending [stripe-errback](https://github.com/bendrucker/stripe-errback)
+
+```js
+var methods = stripeErrback.methods = {
+  async: [
+    'card.createToken',
+    'bankAccount.createToken',
+    'piiData.createToken',
+    'bitcoinReceiver.createReceiver',
+    'bitcoinReceiver.pollReceiver',
+    'bitcoinReceiver.getReceiver'
+  ],
+  sync: [
+    'setPublishableKey',
+    'card.validateCardNumber',
+    'card.validateExpiry',
+    'card.validateCVC',
+    'card.cardType',
+    'bankAccount.validateRoutingNumber',
+    'bankAccount.validateAccountNumber',
+    'bitcoinReceiver.cancelReceiverPoll'
+  ]
+}
+```
+
+## License
+
+MIT
