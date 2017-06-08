@@ -2,7 +2,7 @@ import test from 'ava'
 
 import {
   Notifiable
-} from '../notifiable'
+} from '../src/notifiable'
 
 let notifiable
 test.before(t => {
@@ -17,7 +17,8 @@ test('Notifiable: subscribe observer', t => {
   }
 
   notifiable.on('hello', observer)
-  t.is(notifiable.observers[hello], observer)
+  let observers = notifiable.observers['hello']
+  t.is(observers[0], observer)
 })
 
 test('Notifiable: subscribe to and publish event', t => {

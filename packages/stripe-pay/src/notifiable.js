@@ -5,6 +5,7 @@ import {
 export class Notifiable extends Loggable {
   constructor(name, opts) {
     super(name, opts)
+    this.topic = opts.topic || 'default'
     this.observers = {}
   }
 
@@ -15,8 +16,8 @@ export class Notifiable extends Loggable {
 
   _criteria(event, data, opts = {}) {
     return Object.assign({}, {
-      topic: this.collection,
-      event: eventName,
+      topic: this.topic,
+      event,
       data
     }, opts)
   }
@@ -89,13 +90,13 @@ export class Notifiable extends Loggable {
 
     this.observers = this.observers || {}
     let observers = this.observers[topic] || {}
-    observers = observers[event]
+    observers = observers[event] || {}
 
-    this.publishTo(observers['observers'])
-    this.publishTo(observers[status])
+    this.publishTo(observers['observers'], data, criteria)
+    this.publishTo(observers[status], data, criteria)
   }
 
-  publishTo(observers, data) {
+  publishTo(observers, data, criteria) {
     if (Array.isArray(observers)) {
       observers.map(observer => observer(data))
     } else {
