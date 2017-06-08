@@ -11,7 +11,19 @@ export class Plans extends Collection {
     super('Plans', 'plans', config, opts)
   }
 
-  async validateNew(data) {
-    return typeof data === 'object'
+  get schema() {
+    return {
+      type: 'object',
+      properties: {
+        amount: $money,
+        currency,
+        interval: str(2, 5, {
+          enum: ['day', 'week', 'month', 'year']
+        }),
+        interval_count: num(1, 200),
+        trial_period_days: num(1, 200)
+      },
+      required: ['display_name', 'type']
+    }
   }
 }

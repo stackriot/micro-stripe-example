@@ -18,7 +18,13 @@ test('Customers: create', async t => {
     name: 'Kris',
     email: 'kris@gmail.com'
   }
-
-  let customer = await customers.create(profile)
-  t.is(typeof customer, 'object')
+  try {
+    let customer = await customers.create(profile)
+    console.log({
+      customer
+    })
+    t.is(typeof customer, 'object')
+  } catch (err) {
+    t.fail(err.message)
+  }
 })

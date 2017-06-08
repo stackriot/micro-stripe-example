@@ -1,8 +1,27 @@
 import stripe from './stripe'
+import {
+  Validator
+} from 'jsonschema'
 
 import {
   Notifiable
 } from './Notifiable'
+
+export {
+  str,
+  num,
+  bool,
+  obj,
+  list,
+  date,
+  email,
+  money,
+  $money,
+  name,
+  description,
+  currency
+}
+from './util'
 
 export class Collection extends Notifiable {
   // config is used as the baseline object for operations
@@ -10,6 +29,7 @@ export class Collection extends Notifiable {
   constructor(name, colName, config, opts) {
     super(name, opts)
     this.config = config
+    this.validator = new Validator(opts)
 
     let collection = stripe[colName]
 
@@ -132,12 +152,20 @@ export class Collection extends Notifiable {
       this.notify('created', created)
       return created
     } catch (err) {
-      return err
+      this.handleError(err, data)
     }
   }
 
   async validateNew(data) {
-    return typeof data === 'object'
+    return this.validateSchema(data)
+  }
+
+  validateSchema(data) {
+    return this.validator.validate(data, this.schema)
+  }
+
+  get schema() {
+    this.handleError('Schema not defined')
   }
 
   async createAll(list) {

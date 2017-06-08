@@ -1,5 +1,14 @@
 import {
-  Collection
+  Collection,
+  str,
+  num,
+  bool,
+  obj,
+  list,
+  money,
+  email,
+  date,
+  $id
 } from '../collection'
 
 export function createOrders(config, opts) {
@@ -39,8 +48,17 @@ export class Orders extends Collection {
     return true
   }
 
-  // validate order being created
-  async validateNew(data) {
-    return typeof data === 'object'
+  get schema() {
+    return {
+      type: 'object',
+      properties: {
+        amount: money,
+        amount_returned: $money,
+        application_fee: $money,
+        charge: $id,
+        created: date
+      },
+      required: ['amount', 'type']
+    }
   }
 }

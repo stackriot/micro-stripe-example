@@ -14,4 +14,7 @@ class Invoices extends Collection {
   async delete(id) {
     this.handleError('Invoices can NOT be deleted', id)
   }
+
+  // amount_due
+  // application_fee
 }
