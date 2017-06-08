@@ -1,5 +1,10 @@
 import {
-  Collection
+  Collection,
+  $id,
+  money,
+  currency,
+  name,
+  description
 } from '../collection'
 
 export function createPlans(config, opts) {
@@ -15,15 +20,19 @@ export class Plans extends Collection {
     return {
       type: 'object',
       properties: {
+        id: $id,
+        name,
         amount: $money,
         currency,
         interval: str(2, 5, {
           enum: ['day', 'week', 'month', 'year']
         }),
         interval_count: num(1, 200),
+        metadata: obj(),
+        statement_descriptor: description,
         trial_period_days: num(1, 200)
       },
-      required: ['display_name', 'type']
+      required: ['id', 'amount', 'currency', 'interval', 'name']
     }
   }
 }

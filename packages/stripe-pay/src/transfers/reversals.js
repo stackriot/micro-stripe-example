@@ -19,7 +19,18 @@ export class Reversals extends Collection {
     }
   }
 
-  async validateNew(data) {
-    return typeof data === 'object'
+  // https://stripe.com/docs/api#create_transfer_reversal
+  get schema() {
+    return {
+      type: 'object',
+      properties: {
+        id: $id,
+        amount: $money,
+        description,
+        metadata: obj(),
+        refund_application_fee: bool,
+      },
+      required: ['id']
+    }
   }
 }

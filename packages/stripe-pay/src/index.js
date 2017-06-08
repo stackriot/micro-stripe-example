@@ -1,4 +1,9 @@
 export {
+  createAccounts
+}
+from './accounts'
+
+export {
   createCustomer,
   createCustomers
 }
@@ -29,10 +34,11 @@ export {
 }
 from './transfers'
 
-export {
-  createRecipients
-}
-from './recipients'
+// DEPRECATED
+// export {
+//   createRecipients
+// }
+// from './recipients'
 
 export {
   createInvoices

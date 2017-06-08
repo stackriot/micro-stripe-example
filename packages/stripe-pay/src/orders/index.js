@@ -15,6 +15,14 @@ export function createOrders(config, opts) {
   return new Orders(config, opts)
 }
 
+// return Obj
+// ...
+// amount: money,
+// amount_returned: $money,
+// application_fee: $money,
+// charge: $id,
+// created: date
+
 export class Orders extends Collection {
   constructor(config, opts) {
     super('Orders', 'orders', config, opts)
@@ -52,13 +60,15 @@ export class Orders extends Collection {
     return {
       type: 'object',
       properties: {
-        amount: money,
-        amount_returned: $money,
-        application_fee: $money,
-        charge: $id,
-        created: date
+        currency,
+        coupon: $id,
+        customer: $id,
+        email,
+        items: list(),
+        metadata: obj(),
+        shipping: obj()
       },
-      required: ['amount', 'type']
+      required: ['currency']
     }
   }
 }

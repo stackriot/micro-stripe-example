@@ -11,7 +11,17 @@ export class SubscriptionItems extends Collection {
     super('SubscriptionItems', 'subscriptionItems', config, opts)
   }
 
-  async validateNew(data) {
-    return typeof data === 'object'
+  get schema() {
+    return {
+      type: 'object',
+      properties: {
+        plan: $id,
+        subscription: $id,
+        prorate: bool,
+        proration_date,
+        quantity: num(0, 100)
+      },
+      required: ['plan', 'subscription']
+    }
   }
 }

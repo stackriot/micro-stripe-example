@@ -1,6 +1,7 @@
 import test from 'ava'
 
 import {
+  createAccounts,
   createCustomer,
   createCustomers,
   createInvoices,
@@ -11,13 +12,14 @@ import {
   createSkus,
   createSources,
   createTransfers,
-  createRecipients,
+  // createRecipients, - DEPRECATED
   createSubscriptions,
   createSubscriptionItems
 }
 from '../'
 
 let factories = [
+  createAccounts,
   createCustomer,
   createCustomers,
   createInvoices,
@@ -28,7 +30,7 @@ let factories = [
   createSkus,
   createSources,
   createTransfers,
-  createRecipients,
+  // createRecipients, - DEPRECATED
   createSubscriptions,
   createSubscriptionItems
 ]

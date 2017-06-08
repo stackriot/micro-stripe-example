@@ -6,6 +6,15 @@ export function createProducts(config, opts) {
   return new Products(config, opts)
 }
 
+// return Obj
+// ...
+// livemode: bool
+// skus: list(),
+// has_more: bool,
+// total_count: num(0, 100),
+// created: date,
+// updated: date
+
 export class Products extends Collection {
   constructor(config, opts) {
     super('Product', 'products', config, opts)
@@ -15,20 +24,18 @@ export class Products extends Collection {
     return {
       type: 'object',
       properties: {
+        id: $id,
+        name,
         active: bool,
         attributes: list(),
         caption: name,
-        created: date,
+        deactivate_on: list(),
         description,
         images: list(),
-        name,
+        metadata: obj(),
         package_dimensions: obj(),
         shippable: bool,
-        skus: list(),
-        has_more: bool,
-        total_count: num(0, 100),
         url,
-        updated: date
       },
       required: ['name']
     }

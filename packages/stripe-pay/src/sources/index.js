@@ -10,8 +10,4 @@ export class Sources extends Collection {
   constructor(config, opts = {}) {
     super('Sources', 'sources', config, opts)
   }
-
-  async validateNew(data) {
-    return typeof data === 'object'
-  }
 }

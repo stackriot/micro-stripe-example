@@ -24,6 +24,19 @@ Now start a new Terminal session and the variable `STRIPE_SECRET` should be (glo
 
 Stripe already [supports promises](https://github.com/stripe/stripe-node#using-promises)
 
+## Stripe Connect
+
+- [Stripe connect](https://stripe.com/docs/connect)
+
+A full-stack solution for using Stripe’s capabilities on behalf of others. Connect provides a powerful API and other tools you need to make charges, as well as onboard, verify, and pay sellers, contractors, service providers: whomever your business’s users are.
+
+You can tailor your integration in various ways, including:
+
+- Specifying how money moves from the customer to you, and ultimately to your platform's sellers or recipients
+- Collecting fees for your service
+- Assigning payout schedules and payout methods
+- Supporting different types of Stripe accounts
+
 ## Entities
 
 Currently support the following:

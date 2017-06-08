@@ -11,7 +11,18 @@ export class Transfers extends Collection {
     super('Transfers', 'transfers', config, opts)
   }
 
-  async validateNew(data) {
-    return typeof data === 'object'
+  // https://stripe.com/docs/api#create_transfer
+  get schema() {
+    return {
+      type: 'object',
+      properties: {
+        amount: $money,
+        currency,
+        destination: $id,
+        metadata: obj(),
+        source_transaction: $id
+      },
+      required: ['amount', 'currency', 'destination']
+    }
   }
 }
