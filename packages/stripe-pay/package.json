@@ -21,7 +21,8 @@
     "request": "^2.79.0",
     "stripe": "^4.19.1",
     "stripe-as-promised": "^2.1.1",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "mixwith": "^0.1.1"
   },
   "devDependencies": {
     "ava": "^0.19.1",

@@ -3,36 +3,7 @@ export class Loggable {
     this.opts = opts
     this.io = opts.io || console
     this.logging = opts.logging
-    this.observers = {}
     this.name = name || opts.name
-  }
-
-  on(eventName, observer) {
-    this.log('on', eventName, observer)
-    let slot = this.observers[eventName] || []
-    this.observers[eventName] = slot.concat(observer)
-    return this
-  }
-
-  onAll(eventNames, observer) {
-    if (Array.isArray(eventNames)) {
-      eventNames.map(e => this.on(e, observer))
-      return this
-    } else {
-      this.handleError('onAll: first argument must be a list (Array) of event names to observe', eventNames)
-    }
-  }
-
-  publish(eventName, args) {
-    this.log('publish', eventName, args)
-    this.observers = this.observers || {}
-    let observers = this.observers[eventName] || []
-    if (observers) {
-      observers.map(observer => observer(args))
-    } else {
-      this.log('no observers registered for', eventName)
-    }
-    return this
   }
 
   handleError(err, ...data) {

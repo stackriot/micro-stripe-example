@@ -1,10 +1,10 @@
 import stripe from '../stripe'
 
 import {
-  Loggable
-} from '../loggable'
+  Notifiable
+} from './Notifiable'
 
-export class Collection extends Loggable {
+export class Collection extends Notifiable {
   // config is used as the baseline object for operations
   // use it to fx set the default currency used, etc
   constructor(name, colName, config, opts) {
@@ -28,14 +28,6 @@ export class Collection extends Loggable {
 
     // default in-memory storage
     this.store = {}
-  }
-
-  notify(method, data) {
-    this.publish({
-      topic: this.collection,
-      method,
-      data
-    })
   }
 
   extractId(data) {
