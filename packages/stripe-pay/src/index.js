@@ -32,7 +32,7 @@ from './transfers'
 export {
   createRecipients
 }
-from './receipients'
+from './recipients'
 
 export {
   createInvoices

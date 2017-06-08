@@ -1,4 +1,4 @@
-import stripe from '../stripe'
+import stripe from './stripe'
 
 import {
   Notifiable
@@ -14,7 +14,7 @@ export class Collection extends Notifiable {
     let collection = stripe[colName]
 
     if (!collection) {
-      this.handleError('Bad stripe collection', colName)
+      this.handleError(`Bad stripe collection: stripe.${colName}`, colName)
     }
     this.collection = collection
 

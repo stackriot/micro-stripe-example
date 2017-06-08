@@ -3,6 +3,10 @@ import {
 }
 from './bitcoin'
 
+import {
+  Loggable
+} from '../../loggable'
+
 export class Subscription extends Loggable {
   constructor(config, opts = {}) {
     super(config, opts)
