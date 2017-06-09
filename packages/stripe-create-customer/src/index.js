@@ -1,35 +1,22 @@
 import {
-  extractData,
-  parse,
-  token,
-  send,
-  json
-} from './config'
+  createPayment
+} from './payment'
 
 import {
-  create,
-  customers,
-} from './payment'
+  xtractData,
+} from './util'
 
 import server from './server'
 
 module.exports = async(req, res) => {
-  let {
-    data,
-    query
-  } = await extract(req)
+  let xdata = await xtractData(req)
 
-  if (token !== query.token) return
+  let server = createServer(res, xdata)
+  let payment = createPayment(res, xdata)
 
-  let {
-    stripeToken,
-    user,
-    userId
-  } = extractData(data)
+  // on create Stripe customer success, try to update server User with stripe token ID
+  payment.customers.onSuccess('create', server.update)
 
-  // first, create a new Stripe customer
-  let serverUpdate = server.createUpdate(userId)
-  payment.customers.onSuccess('create', serverUpdate)
-
+  // create a new Stripe customer
   let customer = await payment.create(user, stripeToken)
 }
