@@ -1,7 +1,7 @@
 {
-  "name": "@tecla5/stripe-create-subscription",
+  "name": "@tecla5/stripe-create-plan",
   "version": "1.0.0",
-  "description": "Create a Stripe Subscription by subscribing a customer to a predefined plan",
+  "description": "Create a Stripe subscription plan",
   "main": "src/index.js",
   "dependencies": {
     "micro": "^6.2.0",

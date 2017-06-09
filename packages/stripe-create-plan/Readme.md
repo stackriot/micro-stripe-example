@@ -1,6 +1,6 @@
-# Micro service: Create subscription
+# Micro service: Create subscription plan
 
-Micro service to create a Stripe subscription:
+Micro service to create a subscription plan that can be subscribed to
 
 [Stripe subscriptions quickstart](https://stripe.com/docs/subscriptions/quickstart)
 
