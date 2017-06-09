@@ -1,6 +1,6 @@
 import {
-  createPayment
-} from './payment'
+  createCustomer
+} from './customer'
 
 import {
   xtractData,
@@ -17,11 +17,11 @@ module.exports = async(req, res) => {
   }
 
   let server = createServer(res, xdata)
-  let payment = createPayment(res, xdata)
+  let customer = createCustomer(res, xdata)
 
   // on create Stripe customer success, try to update server User with stripe token ID
   payment.customers.onSuccess('create', server.update)
 
   // create a new Stripe customer
-  let customer = await payment.create(user, stripeToken)
+  let created = await payment.create(user, stripeToken)
 }

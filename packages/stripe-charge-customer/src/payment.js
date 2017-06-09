@@ -6,23 +6,21 @@ import {
   createCharges
 } from '@tecla5/stripe-pay'
 
-const charges = createCharges({
-  currency: 'usd'
-})
-
 function createPayment(res, data) {
   return new Payment(res, data)
 }
 
 export class Payment {
-  constructor(res, {
-    customerId,
-    purchase
-  }) {
+  constructor(res, opts = {}) {
+    let {
+      customerId,
+      purchase
+    } = opts
+
     this.res = res
     this.purchase = purchase
     this.customerId = customerId
-    this.customers = createCustomers()
+    this.customers = createCharges(opts)
     this.charges = charges
   }
 

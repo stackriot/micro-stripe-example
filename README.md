@@ -19,11 +19,16 @@ Micro services configured for [GraphCool](https://www.graph.cool/):
 
 - `@tecla5/stripe-charge-customer`
 - `@tecla5/stripe-create-customer`
+- `@tecla5/stripe-create-subscription`
 
 Stripe
 
 - `@tecla5/stripe-pay`
 - `@tecla5/stripe-mongoose`
+
+### Resources
+
+- [Stripe subscriptions quickstart](https://stripe.com/docs/subscriptions/quickstart)
 
 ## Micro Services
 

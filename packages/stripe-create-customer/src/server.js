@@ -25,7 +25,7 @@ export class Server {
     return `mutation {
     updateUser(
       id: "${this.userId}",
-      stripeId: "${this.customer.id}"
+      stripeId: "${this.customerId}"
     ) {
         id
       }
@@ -34,21 +34,27 @@ export class Server {
 
   get userQuery() {
     return `query {
-    User(
-      id: "${this.userId}"
-      stripeId: "${this.customer.id}"
-    }
-  }`
+      User(
+        id: "${this.userId}"
+        stripeId: "${this.customerId}"
+      }
+    }`
   }
 
-  update(customer) {
-    this.customer = customer
+  set customer(_customer) {
+    this.customer = _customer
+    this.customerId = _customer.id
+  }
 
+  // TODO use async/await promise instead!!!
+  // TODO: use apollo or lokka client via apollo-auth-conn and lokka-auth-conn
+  async update(customer) {
+    this.customer = customer
     // test if user with stripeId already present
-    let matchingUser = graphQlServer.query(this.userQuery)
-    if (matchingUser) {
-      return
-    }
+    // let matchingUser = await graphQlServer.query(this.userQuery)
+    // if (matchingUser) {
+    //   return
+    // }
     // then update user with obtained Stripe customer id
     this.graphQlServer.mutate(this.userMutation)
       .on('error', this.handleError)

@@ -6,19 +6,21 @@ import {
   createCustomers
 } from '@tecla5/stripe-pay'
 
-function createPayment(res, data) {
-  return new Payment(res, data)
+function createCustomer(res, data) {
+  return new Customer(res, data)
 }
 
-export class Payment {
-  constructor(res, {
-    stripeToken,
-    userId
-  }) {
+export class Customer {
+  constructor(res, opts = {}) {
+    let {
+      stripeToken,
+      userId
+    } = opts
+
     this.res = res
     this.stripeToken = stripeToken
     this.userId = userId
-    this.customers = createCustomers()
+    this.customers = createCustomers(opts)
   }
 
   async create(user, stripeToken) {
