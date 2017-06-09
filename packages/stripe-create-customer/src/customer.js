@@ -1,6 +1,6 @@
 import {
-  send
-} from 'micro'
+  StripeApi
+} from '@tecla5/stripe-service'
 
 import {
   createCustomers
@@ -10,36 +10,34 @@ function createCustomer(res, data) {
   return new Customer(res, data)
 }
 
-export class Customer {
+export class Customer extends StripeApi {
   constructor(res, opts = {}) {
+    super(res, opts)
     let {
       stripeToken,
       userId
     } = opts
 
-    this.res = res
     this.stripeToken = stripeToken
     this.userId = userId
+
     this.customers = createCustomers(opts)
+    this.action = customers.create
   }
 
-  async create(user, stripeToken) {
-    try {
-      return await customers.create({
-        email: user.email,
-        description: user.name,
-        source: stripeToken.stripeToken
-      })
-    } catch (err) {
-      this.error(err)
+  prepare(data) {
+    let {
+      user,
+      stripeToken
+    } = data
+    return {
+      email: user.email,
+      description: user.name,
+      source: stripeToken.stripeToken
     }
   }
 
-  error(err) {
-    let stripeToken = this.stripeToken
-    console.error(err)
-    send(this.res, 400, {
-      error: `Stripe customer with card details ${stripeToken.id} could not be created for user ${userId}`
-    })
+  get errorMsg() {
+    return `Stripe customer with card details ${stripeToken.id} could not be created for user ${userId}`
   }
 }

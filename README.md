@@ -47,6 +47,29 @@ Save stripe data in Mongo DB. Designed to be easy to hook up with `stripe-pay`
 
 ## Micro Services
 
+- `create-customer`
+- `charge-customer`
+- `create-plan`
+- `create-subscription`
+
+### Create Subscription
+
+To subscribe a customer to subscription:
+
+1.[define a plan](https://stripe.com/docs/subscriptions/quickstart#define-plan)
+2.[create a customer](https://stripe.com/docs/subscriptions/quickstart#create-customer)
+3.[subscribe customer to plan](https://stripe.com/docs/subscriptions/quickstart#create-subscription)
+
+### Subscription life cycle & events
+
+- [lifecycle](https://stripe.com/docs/subscriptions/lifecycle)
+- [web hooks](https://stripe.com/docs/subscriptions/webhooks)
+- [working with invoices](https://stripe.com/docs/subscriptions/invoices)
+
+We should also use [stripe PDF invoice](https://www.npmjs.com/package/stripe-pdf-invoice) library ;)
+
+### GraphCool example
+
 Example usage of [Graphcool](https://www.graph.cool) mutation callbacks to implement a custom Stripe payment workflow.
 
 The full tutorial can be found [here](https://www.graph.cool/docs/tutorials/stripe-payments-with-mutation-callbacks-using-micro-and-now-soiyaquah7).

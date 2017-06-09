@@ -1,41 +1,32 @@
 import {
-  send
-} from 'micro'
+  StripeApi
+} from '@tecla5/stripe-service'
 
 import {
   createPlans
 } from '@tecla5/stripe-pay'
 
-function createPlan(res, data) {
+export function createPlan(res, data) {
   return new Plan(res, data)
 }
 
-export class Plan {
+export class Plan extends StripeApi {
   constructor(res, opts = {}) {
+    super(res, opts)
     let {
       plan
     } = opts
 
-    this.res = res
     this.plan = plan
     this.plans = createPlans(opts)
+    this.action = this.plans.create
   }
 
-  async create() {
-    // let purchase = this.purchase
-    // let customerId = this.customerId
-    try {
-      return await this.plans.create(this.plan)
-    } catch (err) {
-      this.handleError(err)
-    }
+  prepare(data) {
+    return this.plan
   }
 
-  handleError(err) {
-    console.log(err)
-    send(this.res, 400, {
-      error: `Plan ${this.plan.name} could not be created`
-    })
-
+  get errorMsg() {
+    return `Plan ${this.plan.name} could not be created`
   }
 }

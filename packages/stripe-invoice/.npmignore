@@ -1,0 +1,7 @@
+node_modules
+.idea/
+*.log
+.nyc_output
+coverage
+test
+src

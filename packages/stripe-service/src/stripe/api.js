@@ -2,10 +2,18 @@ import {
   send
 } from 'micro'
 
+function fakeSend(res, code, opts = {}) {
+  return {
+    code,
+    result: opts.error || opts.message
+  }
+}
+
 export class StripeApi {
   constructor(res, opts = {}) {
     this.res = res
     this.opts = opts
+    this.send = opts.fake ? fakeSend : opts.send || send
   }
 
   // to allow filter/enrich data before sent to action
@@ -18,13 +26,13 @@ export class StripeApi {
       data = this.prepare(data)
       return await this.action(data)
     } catch (err) {
-      this.handleError(err)
+      return this.handleError(err)
     }
   }
 
   handleError(err) {
     console.error(err)
-    this.send(this.res, 400, {
+    return this.send(this.res, 400, {
       error: this.errorMsg
     })
   }

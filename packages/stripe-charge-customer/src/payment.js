@@ -1,6 +1,6 @@
 import {
-  send
-} from 'micro'
+  StripeApi
+} from '@tecla5/stripe-service'
 
 import {
   createCharges
@@ -10,39 +10,31 @@ function createPayment(res, data) {
   return new Payment(res, data)
 }
 
-export class Payment {
+export class Payment extends StripeApi {
   constructor(res, opts = {}) {
+    super(res, opts)
     let {
       customerId,
       purchase
     } = opts
 
-    this.res = res
     this.purchase = purchase
     this.customerId = customerId
     this.customers = createCharges(opts)
     this.charges = charges
+    this.action = charges.create
   }
 
-  async charge() {
+  prepare(data) {
     let purchase = this.purchase
-    let customerId = this.customerId
-    try {
-      return await this.charges.create({
-        amount: purchase.amount,
-        description: purchase.description,
-        customer: customerId,
-      })
-    } catch (err) {
-      this.handleError(err)
+    return {
+      amount: purchase.amount,
+      description: purchase.description,
+      customer: this.customerId,
     }
   }
 
-  handleError(err) {
-    console.log(err)
-    send(this.res, 400, {
-      error: `Customer ${this.customerId} could not be charged`
-    })
-
+  get errorMsg() {
+    return `Customer ${this.customerId} could not be charged`
   }
 }
