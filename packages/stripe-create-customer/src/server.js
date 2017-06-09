@@ -6,8 +6,7 @@ import {
   graphQlServer
 } from './gql-server'
 
-// TODO: don't create customer if stripe id already exists
-export function createServer(res, data) {
+export function createServer(res, data = {}) {
   return new Server(res, data)
 }
 

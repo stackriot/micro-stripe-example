@@ -1,21 +1,21 @@
-const {
+import {
   json,
   send
-} = require('micro')
+} from 'micro'
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET)
+import Stripe from 'stripe'
+
+const stripe = Stripe(process.env.STRIPE_SECRET)
 const log = process.env.LOG
-require('now-logs')(log);
+import nowLog from 'now-logs'
+nowLog(log)
 
-const token = process.env.TOKEN
-const {
+import {
   parse
-} = require('url');
+} from 'url'
 
 export {
-  extractData,
   parse,
-  token,
   stripe,
   send,
   json

@@ -1,37 +1,28 @@
 import {
-  createMutation,
-  extract,
-  extractData,
-  parse,
-  token,
-  stripe,
-  send,
-  json
-} from './config'
+  xtractData
+} from './util'
 
 import {
   createServer
 } from './server'
 
-import payment from './payment'
+import {
+  createPayment
+} from './payment'
 
 module.exports = async(req, res) => {
-  let {
-    data,
-    query
-  } = await extract(req)
+  let xdata
+  try {
+    xdata = await xtractData(req)
+  } catch (err) {
+    return
+  }
 
-  if (token !== query.token) return
-  let {
-    purchase,
-    purchaseId,
-    customerId
-  } = extractData(data)
+  let server = createServer(res, xdata)
+  let payment = createPayment(res, xdata)
 
-  let server = createServer(customerId, purchase)
-
-  if (purchase.isPaid) {
-    server.error()
+  if (xdata.purchase.isPaid) {
+    server.isPaid()
   }
   payment.charges.onSuccess('create', server.update)
 

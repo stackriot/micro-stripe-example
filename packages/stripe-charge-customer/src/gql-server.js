@@ -1,4 +1,14 @@
-const request = require('request')
+import request from 'request'
+
+const token = process.env.TOKEN
+const endpoint = process.env.ENDPOINT
+const graphCoolToken = process.env.GC_PAT
+const gqlAuthToken = `Bearer ${graphCoolToken}`
+
+export const graphQlServer = new GraphQLServer({
+  endpoint,
+  token: gqlAuthToken
+})
 
 export class GraphQLServer {
   constructor(opts = {}) {

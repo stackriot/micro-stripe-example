@@ -9,7 +9,12 @@ import {
 import server from './server'
 
 module.exports = async(req, res) => {
-  let xdata = await xtractData(req)
+  let xdata
+  try {
+    xdata = await xtractData(req)
+  } catch (err) {
+    return
+  }
 
   let server = createServer(res, xdata)
   let payment = createPayment(res, xdata)

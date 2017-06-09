@@ -1,26 +1,42 @@
 import {
   send,
-  graphQlServer,
-  createMutation
-} from './config'
+} from 'micro'
 
-export function createServer(purchaseId, customerId) {
-  return new Server(purchaseId, customerId)
+import {
+  graphQlServer
+} from './gql-server'
+
+export function createServer(res, data = {}) {
+  return new Server(res, data)
 }
 
 // TODO: don't create customer if stripe id already exists
 export class Server {
-  constructor(purchaseId, customerId) {
-    this.mutation = createMutation(purchaseId)
+  constructor(res, {
+    purchase,
+    purchaseId,
+    customerId
+  }) {
+    this.customerId = customerId
+    this.purchase = purchase
+    this.purchaseId = purchaseId || purchase.id
     this.graphQlServer = graphQlServer
   }
 
-  error() {
+  isPaid() {
     let customerId = this.customerId
     let purchaseId = this.purchaseId
-    send(res, 400, {
-      error: `Customer ${customerId} could not be charged, because purchase ${purchaseId} was already paid`
+    send(this.res, 400, {
+      error: `Customer ${this.customerId} could not be charged, because purchase ${this.purchaseId} was already paid`
     })
+  }
+
+  get mutation() {
+    return `mutation {
+      updatePurchase(id: "${this.purchaseId}", isPaid: true) {
+        id
+      }
+    }`
   }
 
 
@@ -29,14 +45,19 @@ export class Server {
     let purchaseId = this.purchaseId
 
     this.graphQlServer.mutate(this.mutation)
-      .on('error', (e) => {
-        send(res, 400, {
-          error: `Customer ${customerId} was charged, but purchase ${purchaseId} was not marked as paid`
-        })
-      }).on('response', (response) => {
-        send(res, 200, {
-          message: `Customer ${customerId} was charged and purchase ${purchaseId} was marked as paid`
-        })
-      })
+      .on('error', this.handleError)
+      .on('response', this.handleSuccess)
+  }
+
+  handleError(err) {
+    send(res, 400, {
+      error: `Customer ${this.customerId} was charged, but purchase ${this.purchaseId} was not marked as paid`
+    })
+  }
+
+  handleSuccess(response) {
+    send(res, 200, {
+      message: `Customer ${this.customerId} was charged and purchase ${this.purchaseId} was marked as paid`
+    })
   }
 }
