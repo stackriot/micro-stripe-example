@@ -33,6 +33,16 @@ Stripe modules
 - `@tecla5/stripe-pay` (concevenient wrapper for Stripe API)
 - `@tecla5/stripe-mongoose` (to save stripe data in Mongo DB)
 
+### Setup
+
+Recommended global npm binaries/utils:
+
+- [lerna](https://www.npmjs.com/package/lerna) - mono repo package manager
+- [ava](https://www.npmjs.com/package/ava) - futuristic test runner (promises/parallel)
+- [nyc](https://www.npmjs.com/package/nyc) - Istanbul test coverage
+- [webpack](https://www.npmjs.com/package/webpack) - Babel compiler/loader
+- [ncu](https://www.npmjs.com/package/npm-check-updates) - check npm module updates
+
 ### Stripe Pay
 
 Includes validation, logging, notification system, error handling and much more...

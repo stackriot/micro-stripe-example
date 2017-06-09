@@ -6,11 +6,11 @@ import {
   createCharges
 } from '@tecla5/stripe-pay'
 
-function createPayment(res, data) {
-  return new Payment(res, data)
+function createCharge(res, data) {
+  return new Charge(res, data)
 }
 
-export class Payment extends StripeApi {
+export class Charge extends StripeApi {
   constructor(res, opts = {}) {
     super(res, opts)
     let {
@@ -20,8 +20,7 @@ export class Payment extends StripeApi {
 
     this.purchase = purchase
     this.customerId = customerId
-    this.customers = createCharges(opts)
-    this.charges = charges
+    this.charges = createCharges(opts)
     this.action = charges.create
   }
 

@@ -1,9 +1,4 @@
-import {
-  parse,
-  token,
-} from './config'
-
-export function unpackData(data) {
+export function unpack(data) {
   const stripeToken = data.Purchase.node
   const user = stripeToken.stripeTokenToUser
   const userId = user.id
@@ -12,15 +7,4 @@ export function unpackData(data) {
     user,
     userId
   }
-}
-
-export async function xtractData(req) {
-  let {
-    data,
-    query
-  } = await extract(req)
-
-  if (token !== query.token) throw Error('Token mismatch')
-
-  return unpackData(data)
 }

@@ -10,7 +10,6 @@ import {
   unpack
 } from './util'
 
-
 import {
   createServerApi
 } from './graphql/api'

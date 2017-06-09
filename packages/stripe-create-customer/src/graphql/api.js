@@ -1,27 +1,23 @@
 import {
-  send
-} from 'micro'
+  ServerApi
+} from '@tecla5/stripe-service'
 
-import {
-  graphQlServer
-} from './gql-server'
-
-export function createServer(res, data = {}) {
-  return new Server(res, data)
+export function createServerApi(res, data = {}) {
+  return new Api(res, data)
 }
 
-export class Server {
-  constructor(res, {
-    stripeToken,
-    userId
-  }) {
-    this.res = res
+export class Api extends ServerApi {
+  constructor(res, data = {}) {
+    super(res, data)
+    let {
+      stripeToken,
+      userId
+    } = data
     this.stripeToken = stripeToken
     this.userId = userId
-    this.graphQlServer = graphQlServer
   }
 
-  get userMutation() {
+  get mutation() {
     return `mutation {
     updateUser(
       id: "${this.userId}",
@@ -56,21 +52,9 @@ export class Server {
     //   return
     // }
     // then update user with obtained Stripe customer id
-    this.graphQlServer.mutate(this.userMutation)
+    this.graphQlServer.mutate(this.mutation)
       .on('error', this.handleError)
       .on('response', this.handleSuccess)
-  }
-
-  handleSuccess(response) {
-    send(this.res, 200, {
-      message: this.successMsg
-    })
-  }
-
-  handleError(err) {
-    send(this.res, 400, {
-      error: this.errorMsg
-    })
   }
 
   get errorMsg() {

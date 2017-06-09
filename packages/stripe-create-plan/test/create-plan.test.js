@@ -11,6 +11,10 @@ test.before(t => {
   })
 })
 
-test('Accounts: construct', t => {
-  t.is(typeof accounts, 'object')
+test('createPlan', t => {
+  t.fail('TODO')
+})
+
+test('Plan: construct', t => {
+  t.is(typeof plan, 'object')
 })

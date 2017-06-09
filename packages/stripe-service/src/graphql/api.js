@@ -23,7 +23,7 @@ export class ServerApi {
   }
 
   // TODO: use graphQL client
-  update() {
+  update(data) {
     this.graphQlServer.mutate(this.mutation)
       .on('error', this.handleError)
       .on('response', this.handleSuccess)

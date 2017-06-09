@@ -14,6 +14,7 @@ export class StripeApi {
     this.res = res
     this.opts = opts
     this.send = opts.fake ? fakeSend : opts.send || send
+    this.create = this.execute.bind(this)
   }
 
   // to allow filter/enrich data before sent to action

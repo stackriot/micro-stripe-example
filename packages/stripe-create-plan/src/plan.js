@@ -13,11 +13,7 @@ export function createPlan(res, data) {
 export class Plan extends StripeApi {
   constructor(res, opts = {}) {
     super(res, opts)
-    let {
-      plan
-    } = opts
-
-    this.plan = plan
+    this.plan = opts.plan
     this.plans = createPlans(opts)
     this.action = this.plans.create
   }

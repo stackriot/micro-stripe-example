@@ -1,22 +1,15 @@
 import {
-  send
-} from 'micro'
+  ServerApi
+} from '@tecla5/stripe-service'
 
-import {
-  graphQlServer
-} from './gql-server'
-
-export function createServer(res, data = {}) {
-  return new Server(res, data)
+export function createServerApi(res, data = {}) {
+  return new Api(res, data)
 }
 
-export class Server {
+export class Api extends ServerApi {
   constructor(res, data = {}) {
-    let {
-      plan
-    } = data
-    this.plan = plan
-    this.graphQlServer = graphQlServer
+    super(res, data)
+    this.plan = data.plan
   }
 
   // TODO: add more plan details
@@ -31,27 +24,9 @@ export class Server {
     }`
   }
 
-  update() {
-    this.graphQlServer.mutate(this.mutation)
-      .on('error', this.handleError)
-      .on('response', this.handleSuccess)
-  }
-
   isSubscribed() {
     send(this.res, 400, {
       error: this.alreadySubscribedMsg
-    })
-  }
-
-  handleError(err) {
-    send(res, 400, {
-      error: this.errorMsg
-    })
-  }
-
-  handleSuccess(response) {
-    send(res, 200, {
-      message: this.successMsg
     })
   }
 

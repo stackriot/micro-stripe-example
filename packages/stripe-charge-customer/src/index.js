@@ -3,12 +3,12 @@ import {
 } from './util'
 
 import {
-  createServer
-} from './server'
+  createServerApi
+} from './graphql/api'
 
 import {
-  createPayment
-} from './payment'
+  createCharge
+} from './charge'
 
 module.exports = async(req, res) => {
   let xdata
@@ -18,13 +18,12 @@ module.exports = async(req, res) => {
     return
   }
 
-  let server = createServer(res, xdata)
-  let payment = createPayment(res, xdata)
+  let serverApi = createServerApi(res, xdata)
+  let charge = createCharge(res, xdata)
 
   if (xdata.purchase.isPaid) {
     server.isPaid()
   }
-  payment.charges.onSuccess('create', server.update)
-
-  let charged = await payment.charge(customerId, purchase)
+  charge.charges.onSuccess('create', serverApi.update)
+  let charged = await charge.create(xdata)
 }
