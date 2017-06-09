@@ -1,18 +1,15 @@
 import {
-  send,
-} from 'micro'
+  ServerApi
+} from '@tecla5/stripe-service'
 
-import {
-  graphQlServer
-} from './gql-server'
-
-export function createServer(res, data = {}) {
-  return new Server(res, data)
+export function createServerApi(res, data = {}) {
+  return new Api(res, data)
 }
 
-// TODO: don't create customer if stripe id already exists
-export class Server {
+// TODO: use apollo-auth-conn or similar (ie. update stripe-service Server)
+export class Api extends ServerApi {
   constructor(res, data = {}) {
+    super(res, data)
     let {
       subscription,
       subscriptionId,
@@ -21,7 +18,6 @@ export class Server {
     this.subscriptionId = subscriptionId
     this.subscription = subscription
     this.customerId = customerId || subscription.id
-    this.graphQlServer = graphQlServer
   }
 
   get mutation() {
@@ -32,27 +28,9 @@ export class Server {
     }`
   }
 
-  update() {
-    this.graphQlServer.mutate(this.mutation)
-      .on('error', this.handleError)
-      .on('response', this.handleSuccess)
-  }
-
   isSubscribed() {
-    send(this.res, 400, {
+    this.send(this.res, 400, {
       error: this.alreadySubscribedMsg
-    })
-  }
-
-  handleError(err) {
-    send(res, 400, {
-      error: this.errorMsg
-    })
-  }
-
-  handleSuccess(response) {
-    send(res, 200, {
-      message: this.successMsg
     })
   }
 

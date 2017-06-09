@@ -1,5 +1,5 @@
 import {
-  send,
+  send
 } from 'micro'
 
 import {

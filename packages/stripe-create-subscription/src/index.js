@@ -1,30 +1,33 @@
 import {
   xtractData
+} from '@tecla5/stripe-api'
+
+import {
+  createSubscription
+} from './subscription'
+
+import {
+  unpack
 } from './util'
 
-import {
-  createServer
-} from './server'
 
 import {
-  createPayment
-} from './payment'
+  createServerApi
+} from './graphql/api'
 
 module.exports = async(req, res) => {
   let xdata
   try {
-    xdata = await xtractData(req)
+    xdata = await xtractData(req, {
+      unpack
+    })
   } catch (err) {
     return
   }
 
-  let server = createServer(res, xdata)
-  let payment = createPayment(res, xdata)
+  let serverApi = createServerApi(res, xdata)
+  let subscription = createSubscription(res, xdata)
+  subscription.subscriptions.onSuccess('create', serverApi.update)
 
-  if (xdata.purchase.isPaid) {
-    server.isPaid()
-  }
-  payment.charges.onSuccess('create', server.update)
-
-  let charged = await payment.charge(customerId, purchase)
+  let subscribed = await subscription.subscribe(xdata)
 }

@@ -15,16 +15,31 @@ Using:
 
 ## Modules included
 
+Foundation layer for building stripe services (with optional GraphQL queries)
+
+- `@tecla5/stripe-service`
+
 Micro services configured for [GraphCool](https://www.graph.cool/):
 
 - `@tecla5/stripe-charge-customer`
 - `@tecla5/stripe-create-customer`
 - `@tecla5/stripe-create-subscription`
+- `@tecla5/stripe-create-plan`
 
-Stripe
+Currently the `stripe-create-subscription` demonstrates the most concise example of building a quick stripe service.
 
-- `@tecla5/stripe-pay`
-- `@tecla5/stripe-mongoose`
+Stripe modules
+
+- `@tecla5/stripe-pay` (concevenient wrapper for Stripe API)
+- `@tecla5/stripe-mongoose` (to save stripe data in Mongo DB)
+
+### Stripe Pay
+
+Includes validation, logging, notification system, error handling and much more...
+
+### Stripe Mongoose
+
+Save stripe data in Mongo DB. Designed to be easy to hook up with `stripe-pay`
 
 ### Resources
 
