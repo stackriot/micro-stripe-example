@@ -14,6 +14,23 @@ Set `STRIPE_SECRET` environment variable
 
 Use `src/config.js` to configure invoice and stripe options to suit your needs...
 
+## Testing
+
+Using [Ava endpoint testing recipe](https://github.com/avajs/ava/blob/master/docs/recipes/endpoint-testing.md)
+
+```js
+test('signup:Success', async t => {
+  t.plan(2)
+
+  const res = await request(makeApp())
+    .post('/signup')
+    .send({email: 'ava@rocks.com', password: '123123'})
+
+  t.is(res.status, 200)
+  t.is(res.body.email, 'ava@rocks.com')
+});
+```
+
 ## License
 
 MIT

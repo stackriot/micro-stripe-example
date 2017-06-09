@@ -585,3 +585,24 @@ To add the keys: `npm run keys` or `node ./now/load.js`
 Join our [Slack community](http://slack.graph.cool/) if you run into issues or have questions. We love talking to you!
 
 ![](http://i.imgur.com/5RHR6Ku.png)
+
+## Testing
+
+Using [Ava endpoint testing recipe](https://github.com/avajs/ava/blob/master/docs/recipes/endpoint-testing.md)
+
+```js
+test('signup:Success', async t => {
+  t.plan(2)
+
+  const res = await request(makeApp())
+    .post('/signup')
+    .send({email: 'ava@rocks.com', password: '123123'})
+
+  t.is(res.status, 200)
+  t.is(res.body.email, 'ava@rocks.com')
+});
+```
+
+## License
+
+MIT

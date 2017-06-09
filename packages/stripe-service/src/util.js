@@ -3,6 +3,18 @@ import {
   token,
 } from './config'
 
+
+async function extract(req) {
+  const data = await json(req)
+  const {
+    query
+  } = parse(req.url, true)
+  return {
+    data,
+    query
+  }
+}
+
 export async function xtractData(req, opts = {}) {
   let {
     data,
