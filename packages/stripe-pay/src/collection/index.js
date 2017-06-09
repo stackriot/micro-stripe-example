@@ -72,14 +72,20 @@ export class Collection extends Notifiable {
     }
   }
 
-  prepare(data) {
+  async prepare(data) {
     let base = this.config || {}
     return Object.assign({}, base, data)
   }
 
+  // allow transformation of data
+  // f.ex by lookup of ids
+  async prepareNew(data) {
+    return data
+  }
+
   async update(id, data) {
     try {
-      data = this.prepare(data)
+      data = await this.prepare(data)
       let validated = await this.validateNew(data)
       if (!validated) {
         this.handleError('validation error', {

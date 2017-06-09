@@ -10,7 +10,10 @@ require('now-logs')(log);
 const endpoint = process.env.ENDPOINT
 const graphcoolToken = `Bearer ${process.env.GC_PAT}`
 const token = process.env.TOKEN
-const charge = require('./charge')
+const {
+  create,
+  customers
+} = require('./create')
 const {
   parse
 } = require('url');
@@ -22,6 +25,10 @@ function createMutation(userId, customer) {
     }
   }`
 }
+
+const {
+  GraphQLServer
+} = require('./gql-server')
 
 const graphQlServer = new GraphQLServer({
   endpoint,
@@ -44,9 +51,6 @@ export {
   createMutation,
   extractData,
   parse,
-  charge,
-  endpoint,
-  graphcoolToken,
   token,
   stripe,
   send,

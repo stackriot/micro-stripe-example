@@ -3,6 +3,10 @@ const {
   send
 } = require('micro')
 
+const {
+  GraphQLServer
+} = require('./gql-server')
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 const log = process.env.LOG
 require('now-logs')(log);

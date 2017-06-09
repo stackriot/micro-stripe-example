@@ -2,16 +2,18 @@ import {
   createMutation,
   extract,
   extractData,
-  graphQlServer,
   parse,
-  charge,
-  endpoint,
-  graphcoolToken,
   token,
   stripe,
   send,
   json
 } from './config'
+
+import {
+  createServer
+} from './server'
+
+import payment from './payment'
 
 module.exports = async(req, res) => {
   let {
@@ -25,25 +27,13 @@ module.exports = async(req, res) => {
     purchaseId,
     customerId
   } = extractData(data)
-  // Add logs during development, but remove for production
-  console.log('Purchase', purchase)
+
+  let server = createServer(customerId, purchase)
 
   if (purchase.isPaid) {
-    send(res, 400, {
-      error: `Customer ${customerId} could not be charged, because purchase ${purchaseId} was already paid`
-    })
+    server.error()
   }
-  let charged = await charge(customerId, purchase)
-  const mutation = createMutation(purchaseId)
+  payment.charges.onSuccess('create', server.update)
 
-  graphQlServer.mutate(mutation)
-    .on('error', (e) => {
-      send(res, 400, {
-        error: `Customer ${customerId} was charged, but purchase ${purchaseId} was not marked as paid`
-      })
-    }).on('response', (response) => {
-      send(res, 200, {
-        message: `Customer ${customerId} was charged and purchase ${purchaseId} was marked as paid`
-      })
-    })
+  let charged = await payment.charge(customerId, purchase)
 }
